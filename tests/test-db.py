@@ -26,3 +26,6 @@ class TestDatabase(object):
     def testRem(self):
         assert all(d.add(**item))
         assert all(d.rem(item["name"]))
+
+    def testRemVoid(self):
+        assert not any(d.rem(item["name"]))
