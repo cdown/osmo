@@ -3,5 +3,5 @@
 import osmo
 import tempfile
 
-tmpDir = tempfile.mkdtemp(prefix="osmo-nose")
+tmpDir = tempfile.mkdtemp(prefix="osmo-nose-")
 d = osmo.Database(root=tmpDir)
