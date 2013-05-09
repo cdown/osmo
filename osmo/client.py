@@ -7,7 +7,6 @@ d = osmo.db.Database()
 f = osmo.fs.Filesystem()
 
 def add(name, start, end, length):
-    f.add(name)
     d.add(name, start, end, length)
 
 def rem(name):
