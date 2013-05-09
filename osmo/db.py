@@ -41,3 +41,6 @@ class Database(object):
         p.zrangebyscore(self.rk["start"], "-inf", now)
         p.zrangebyscore(self.rk["end"], now, "+inf")
         return set.intersection(*p.execute())
+
+    def media_length(self, name):
+        return self.r.zscore(self.rk["length"], name)
