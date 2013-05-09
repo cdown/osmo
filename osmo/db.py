@@ -38,6 +38,8 @@ class Database(object):
         p.zrem(self.rk["priority"], name)
         return p.execute()
 
+
+
     def media_current(self):
         now = int(time.time())
         p = self.r.pipeline()
@@ -45,8 +47,14 @@ class Database(object):
         p.zrangebyscore(self.rk["end"], now, "+inf")
         return set.intersection(*map(set, p.execute()))
 
+    def media_priority(self, name):
+        return self.r.zscore(self.rk["priority"], name)
+
     def media_length(self, name):
         return self.r.zscore(self.rk["length"], name)
 
     def current(self):
-        return [ (x, self.media_length(x)) for x in self.media_current() ]
+        return sorted(
+            ((x, self.media_length(x)) for x in self.media_current()),
+            key=lambda x: self.media_priority(x[0])
+        )
