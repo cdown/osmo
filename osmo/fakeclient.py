@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import osmo.db
+import osmo
 import time
 
 d = osmo.db.Database()

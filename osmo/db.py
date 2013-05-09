@@ -44,3 +44,6 @@ class Database(object):
 
     def media_length(self, name):
         return self.r.zscore(self.rk["length"], name)
+
+    def current(self):
+        return [ (x, self.media_length(x)) for x in self.media_current() ]
