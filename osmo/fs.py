@@ -18,4 +18,4 @@ class Filesystem(object):
         return os.path.isfile(self._cdir("media", name))
 
     def rem(self, name):
-        os.remove(_cdir("media", name))
+        os.remove(self._cdir("media", name))
