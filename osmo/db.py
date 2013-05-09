@@ -20,7 +20,6 @@ class Database(object):
         }
 
     def add(self, name, start, end, length, priority):
-        assert self.f.media_exists(name)
         p = self.r.pipeline()
         p.sadd(self.rk["media"],    name)
         p.zadd(self.rk["start"],    name, start)

@@ -1,13 +1,24 @@
 #!/usr/bin/env python
 
-import osmo
-import tempfile
-import shutil
+import osmo.db
+import time
+
+d = osmo.db.Database(test=True)
+item = {
+    "name": "foo",
+    "start": time.time() - 1,
+    "end": time.time() + 3600,
+    "length": 5,
+    "priority": 1,
+}
 
 class TestDatabase(object):
-    def setup_class(self):
-        self.temp_dir = tempfile.mkdtemp(prefix="osmo-nose-")
-        self.d = osmo.Database(root=temp_dir)
+    def setup(self):
+        d.r.flushdb()
 
-    def teardown_class(self):
-        shutil.rmtree(self.tempDir)
+    def testAdd(self):
+        assert all(d.add(**item))
+
+    def testRem(self):
+        assert all(d.add(**item))
+        assert all(d.rem(item["name"]))
