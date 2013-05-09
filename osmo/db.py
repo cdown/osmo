@@ -11,7 +11,6 @@ class Database(object):
         self.root = root
         self.d = { k: os.path.join(self.root, v) for k, v in {
             "media": "media",
-            "info": "info",
             "now": "now",
         }.items() }
 
@@ -26,6 +25,13 @@ class Database(object):
 
     def _cdir(self, name, path):
         return os.path.join(self.d[name], path)
+
+    def add(self, name, start, end, length):
+        p = self.r.pipeline()
+        p.zadd(self.rk["start"],  name, start)
+        p.zadd(self.rk["end"],    name, end)
+        p.zadd(self.rk["length"], name, length)
+        return p.execute()
 
     def media_current(self):
         now = int(time.time())
