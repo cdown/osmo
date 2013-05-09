@@ -12,10 +12,13 @@ class Filesystem(object):
         }.items() }
 
     def _cdir(self, name, path):
-        return os.path.join(self.d[name], path)
+        return os.path.join(self.d[name], name)
 
-    def add(self, path):
-        shutil.copy(path, self._cdir("media"))
+    def media_exists(self, name):
+        return os.path.isfile(self._cdir("media", name))
 
-    def rem(self, file_name):
-        os.remove(_cdir("media", file_name))
+    def add(self, name):
+        shutil.copy(path, self._cdir("media", os.path.basename(path)))
+
+    def rem(self, name):
+        os.remove(_cdir("media", name))

@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 
 import os
+import osmo.fs
 import redis
 import time
 
 class Database(object):
     def __init__(self, test=False):
+        self.f = osmo.fs.Filesystem()
         self.r = redis.Redis()
+
         self.keyspace = "osmo"
         self.rk = {
             "media":  "%s:media"  % self.keyspace,
@@ -16,6 +19,7 @@ class Database(object):
         }
 
     def add(self, name, start, end, length):
+        assert self.f.media_exists(name)
         p = self.r.pipeline()
         p.sadd(self.rk["media"],  name)
         p.zadd(self.rk["start"],  name, start)
