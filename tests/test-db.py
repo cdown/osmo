@@ -33,16 +33,16 @@ class TestDatabase(object):
     def setup(self):
         d.r.flushdb()
 
-    def testAdd(self):
+    def test_add(self):
         assert all(d.add(**items["current"]))
 
-    def testAddTwice(self):
+    def test_add_twice(self):
         assert all(d.add(**items["current"]))
         assert not any(d.add(**items["current"]))
 
-    def testRem(self):
+    def test_rem(self):
         assert all(d.add(**items["current"]))
         assert all(d.rem(items["current"]["name"]))
 
-    def testRemVoid(self):
+    def test_rem_nonexistent(self):
         assert not any(d.rem(items["current"]["name"]))
