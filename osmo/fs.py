@@ -3,9 +3,10 @@
 import os
 import osmo.db
 import shutil
+import tempfile
 
 class Filesystem(object):
-    def __init__(self, root="/srv/osmo", test=False):
+    def __init__(self, root="/srv/osmo"):
         self.root = root
         self.d = { k: os.path.join(self.root, v) for k, v in {
             "media": "media",

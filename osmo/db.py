@@ -8,7 +8,7 @@ import time
 class Database(object):
     def __init__(self, test=False):
         self.f = osmo.fs.Filesystem()
-        self.r = redis.Redis()
+        self.r = redis.Redis(db=2 if test else 1)
 
         self.keyspace = "osmo"
         self.rk = {
