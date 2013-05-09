@@ -3,6 +3,7 @@
 import json
 import os
 import redis
+import time
 
 class Database(object):
     def __init__(self, root="/srv/osmo", test=False):
@@ -21,3 +22,9 @@ class Database(object):
             "end":    "%s:end"    % self.keyspace,
             "length": "%s:length" % self.keyspace,
         }
+
+    def media_current(self):
+        now = int(time.time())
+        started =  set(self.r.zrangebyscore(self.rk["start"], "-inf", now))
+        notEnded = set(self.r.zrangebyscore(self.rk["end"],   now, "+inf"))
+        return started & notEnded
