@@ -13,5 +13,4 @@ def rem(name):
     _d.rem(name)
     _f.rem(name)
 
-def current():
-    return _d.current()
+current = _d.current

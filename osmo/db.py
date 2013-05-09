@@ -8,7 +8,7 @@ import time
 class Database(object):
     def __init__(self, test=False):
         self.f = osmo.fs.Filesystem()
-        self.r = redis.Redis(db=2 if test else 1)
+        self.r = redis.Redis(db=1 if test else 0)
 
         self.keyspace = "osmo"
         self.rk = {
@@ -37,8 +37,6 @@ class Database(object):
         p.zrem(self.rk["length"],   name)
         p.zrem(self.rk["priority"], name)
         return p.execute()
-
-
 
     def media_current(self):
         now = int(time.time())
