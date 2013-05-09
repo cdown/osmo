@@ -33,6 +33,7 @@ class Database(object):
 
     def media_current(self):
         now = int(time.time())
-        started =  set(self.r.zrangebyscore(self.rk["start"], "-inf", now))
-        notEnded = set(self.r.zrangebyscore(self.rk["end"], now, "+inf"))
-        return started & notEnded
+        p = self.r.pipeline()
+        p.zrangebyscore(self.rk["start"], "-inf", now)
+        p.zrangebyscore(self.rk["end"], now, "+inf")
+        return set.intersection(*p.execute())
