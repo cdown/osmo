@@ -13,7 +13,7 @@ def test_listdir_full():
         open(os.path.join(temp_dir, file_name), "w+").close()
 
     file_names_list = set(os.listdir(temp_dir))
-    file_names_path_list = set(s._listdir_full(temp_dir))
+    file_names_path_list = s._listdir_full(temp_dir)
 
     assert file_names_list == file_names
     assert file_names_path_list == { os.path.join(temp_dir, file_name) for file_name in file_names_list }
