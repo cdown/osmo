@@ -10,8 +10,9 @@ class Database(object):
         # Filesystem
         self.root = root
         self.d = { k: os.path.join(self.root, v) for k, v in {
-            "media":"media",
-            "info":"info",
+            "media": "media",
+            "info": "info",
+            "now": "now",
         }.items() }
 
         # Redis
@@ -23,8 +24,15 @@ class Database(object):
             "length": "%s:length" % self.keyspace,
         }
 
+    def _cdir(self, name, path):
+        return os.path.join(self.d[name], path)
+
     def media_current(self):
         now = int(time.time())
         started =  set(self.r.zrangebyscore(self.rk["start"], "-inf", now))
-        notEnded = set(self.r.zrangebyscore(self.rk["end"],   now, "+inf"))
+        notEnded = set(self.r.zrangebyscore(self.rk["end"], now, "+inf"))
         return started & notEnded
+
+    def link_current(self):
+        for file_name in self.media_current():
+            os.symlink(self._cdir("media", file_name), self._cdir("now"))
