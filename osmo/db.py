@@ -12,27 +12,30 @@ class Database(object):
 
         self.keyspace = "osmo"
         self.rk = {
-            "media":  "%s:media"  % self.keyspace,
-            "start":  "%s:start"  % self.keyspace,
-            "end":    "%s:end"    % self.keyspace,
-            "length": "%s:length" % self.keyspace,
+            "media":    "%s:media"    % self.keyspace,
+            "start":    "%s:start"    % self.keyspace,
+            "end":      "%s:end"      % self.keyspace,
+            "length":   "%s:length"   % self.keyspace,
+            "priority": "%s:priority" % self.keyspace,
         }
 
-    def add(self, name, start, end, length):
+    def add(self, name, start, end, length, priority):
         assert self.f.media_exists(name)
         p = self.r.pipeline()
-        p.sadd(self.rk["media"],  name)
-        p.zadd(self.rk["start"],  name, start)
-        p.zadd(self.rk["end"],    name, end)
-        p.zadd(self.rk["length"], name, length)
+        p.sadd(self.rk["media"],    name)
+        p.zadd(self.rk["start"],    name, start)
+        p.zadd(self.rk["end"],      name, end)
+        p.zadd(self.rk["length"],   name, length)
+        p.zadd(self.rk["priority"], name, priority)
         return p.execute()
 
     def rem(self, name):
         p = self.r.pipeline()
-        p.srem(self.rk["media"],  name)
-        p.zrem(self.rk["start"],  name)
-        p.zrem(self.rk["end"],    name)
-        p.zrem(self.rk["length"], name)
+        p.srem(self.rk["media"],    name)
+        p.zrem(self.rk["start"],    name)
+        p.zrem(self.rk["end"],      name)
+        p.zrem(self.rk["length"],   name)
+        p.zrem(self.rk["priority"], name)
         return p.execute()
 
     def media_current(self):
