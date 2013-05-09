@@ -19,6 +19,10 @@ class TestDatabase(object):
     def testAdd(self):
         assert all(d.add(**item))
 
+    def testAddTwice(self):
+        assert all(d.add(**item))
+        assert not any(d.add(**item))
+
     def testRem(self):
         assert all(d.add(**item))
         assert all(d.rem(item["name"]))
