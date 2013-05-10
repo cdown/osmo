@@ -8,7 +8,7 @@ class Database(object):
         self.r = redis.Redis(db=1 if test else 0, decode_responses=True)
         self.keyspace = "osmo"
         self.rk = {
-            "media": "%s:media" % self.keyspace,
+            "item":  "%s:item"  % self.keyspace,
             "start": "%s:start" % self.keyspace,
             "end":   "%s:end"   % self.keyspace,
             "span":  "%s:span"  % self.keyspace,
@@ -17,7 +17,7 @@ class Database(object):
 
     def add(self, name, start, end, span, rank):
         p = self.r.pipeline()
-        p.sadd(self.rk["media"], name)
+        p.sadd(self.rk["item"],  name)
         p.zadd(self.rk["start"], name, start)
         p.zadd(self.rk["end"],   name, end)
         p.zadd(self.rk["span"],  name, span)
@@ -26,7 +26,7 @@ class Database(object):
 
     def rem(self, name):
         p = self.r.pipeline()
-        p.srem(self.rk["media"], name)
+        p.srem(self.rk["item"],  name)
         p.zrem(self.rk["start"], name)
         p.zrem(self.rk["end"],   name)
         p.zrem(self.rk["span"],  name)
@@ -40,11 +40,11 @@ class Database(object):
         p.zrangebyscore(self.rk["end"], now, "+inf")
         return sorted(
             set.intersection(*map(set, p.execute())),
-            key=lambda name: self.media_rank(name)
+            key=lambda name: self.item_rank(name)
         )
 
-    def media_rank(self, name):
+    def item_rank(self, name):
         return self.r.zscore(self.rk["rank"], name)
 
-    def media_span(self, name):
+    def item_span(self, name):
         return self.r.zscore(self.rk["span"], name)
