@@ -38,9 +38,8 @@ class Database(object):
         p = self.r.pipeline()
         p.zrangebyscore(self.rk["start"], "-inf", now)
         p.zrangebyscore(self.rk["end"], now, "+inf")
-        current_media = set.intersection(*map(set, p.execute()))
         return sorted(
-            (x for x in current_media),
+            set.intersection(*map(set, p.execute())),
             key=lambda name: self.media_rank(name)
         )
 
