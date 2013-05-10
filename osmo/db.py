@@ -5,7 +5,7 @@ import time
 
 class Database(object):
     def __init__(self, test=False):
-        self.r = redis.Redis(db=1 if test else 0)
+        self.r = redis.Redis(db=1 if test else 0, decode_responses=True)
         self.keyspace = "osmo"
         self.rk = {
             "media": "%s:media" % self.keyspace,
@@ -40,7 +40,7 @@ class Database(object):
         p.zrangebyscore(self.rk["end"], now, "+inf")
         current_media = set.intersection(*map(set, p.execute()))
         return sorted(
-            (x.decode("utf8") for x in current_media),
+            (x for x in current_media),
             key=lambda name: self.media_rank(name)
         )
 
