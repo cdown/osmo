@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 
-import os
-import osmo.fs
 import redis
 import time
 
 class Database(object):
     def __init__(self, test=False):
-        self.f = osmo.fs.Filesystem()
         self.r = redis.Redis(db=1 if test else 0)
 
         self.keyspace = "osmo"
