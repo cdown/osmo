@@ -10,22 +10,22 @@ items = {
         "name": "foo",
         "start": now - 1,
         "end": now + 3600,
-        "duration": 5,
-        "priority": 1,
+        "span": 5,
+        "rank": 1,
     },
     "past":{
         "name": "foo",
         "start": now - 2,
         "end": now - 1,
-        "duration": 5,
-        "priority": 1,
+        "span": 5,
+        "rank": 1,
     },
     "future":{
         "name": "foo",
         "start": now + 3600,
         "end": now + 7200,
-        "duration": 5,
-        "priority": 1,
+        "span": 5,
+        "rank": 1,
     },
 }
 
