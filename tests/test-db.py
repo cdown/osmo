@@ -33,6 +33,9 @@ class TestDatabase(object):
     def setup(self):
         d.r.flushdb()
 
+    def teardown(self):
+        d.r.flushdb()
+
     def test_add(self):
         assert all(d.add(**items["current"]))
 
