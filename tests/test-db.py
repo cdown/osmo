@@ -40,6 +40,11 @@ class TestDatabase(object):
         assert all(d.add(**items["current"]))
         assert not any(d.add(**items["current"]))
 
+    def test_add_different(self):
+        assert all(d.add(**items["current"]))
+        assert all(d.add(**items["past"]))
+        assert all(d.add(**items["future"]))
+
     def test_rem(self):
         assert all(d.add(**items["current"]))
         assert all(d.rem(items["current"]["name"]))
