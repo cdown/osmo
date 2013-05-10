@@ -40,7 +40,7 @@ class Database(object):
         p.zrangebyscore(self.rk["end"], now, "+inf")
         current_media = set.intersection(*map(set, p.execute()))
         return sorted(
-            current_media,
+            (x.decode("utf8") for x in current_media),
             key=lambda name: self.media_rank(name)
         )
 
