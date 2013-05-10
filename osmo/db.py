@@ -8,7 +8,7 @@ class Database(object):
         self.r = redis.Redis(db=1 if test else 0, decode_responses=True)
         self.keyspace = "osmo"
         self.rk = {
-            "item":  "%s:item"  % self.keyspace,
+            "items": "%s:items" % self.keyspace,
             "start": "%s:start" % self.keyspace,
             "end":   "%s:end"   % self.keyspace,
             "span":  "%s:span"  % self.keyspace,
@@ -17,7 +17,7 @@ class Database(object):
 
     def add(self, name, start, end, span, rank):
         p = self.r.pipeline()
-        p.sadd(self.rk["item"],  name)
+        p.sadd(self.rk["items"], name)
         p.zadd(self.rk["start"], name, start)
         p.zadd(self.rk["end"],   name, end)
         p.zadd(self.rk["span"],  name, span)
@@ -26,7 +26,7 @@ class Database(object):
 
     def rem(self, name):
         p = self.r.pipeline()
-        p.srem(self.rk["item"],  name)
+        p.srem(self.rk["items"], name)
         p.zrem(self.rk["start"], name)
         p.zrem(self.rk["end"],   name)
         p.zrem(self.rk["span"],  name)
