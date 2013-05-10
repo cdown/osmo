@@ -7,21 +7,21 @@ d = osmo.db.Database(test=True)
 now = time.time()
 items = {
     "current":{
-        "name": "foo",
+        "name": "current",
         "start": now - 1,
         "end": now + 3600,
         "span": 5,
         "rank": 1,
     },
     "past":{
-        "name": "foo",
+        "name": "past",
         "start": now - 2,
         "end": now - 1,
         "span": 5,
         "rank": 1,
     },
     "future":{
-        "name": "foo",
+        "name": "future",
         "start": now + 3600,
         "end": now + 7200,
         "span": 5,
