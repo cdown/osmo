@@ -58,6 +58,11 @@ class TestDatabase(object):
         outItem = d.get(inItem["name"])
         assert inItem == outItem
 
+    def test_span(self):
+        item = items["current"]
+        assert all(d.add(**item))
+        assert d.item_span(item["name"]) == item["span"]
+
     def test_rem(self):
         assert all(d.add(**items["current"]))
         assert all(d.rem(items["current"]["name"]))
