@@ -24,6 +24,21 @@ class Database(object):
         p.zadd(self.rk["rank"],  name, rank)
         return p.execute()
 
+    def get(self, name):
+        p = self.r.pipeline()
+        p.zscore(self.rk["start"], name)
+        p.zscore(self.rk["end"],   name)
+        p.zscore(self.rk["span"],  name)
+        p.zscore(self.rk["rank"],  name)
+        start, end, span, rank = p.execute()
+        return {
+            "name": name,
+            "start": start,
+            "end": end,
+            "span": span,
+            "rank": rank,
+        }
+
     def rem(self, name):
         p = self.r.pipeline()
         p.srem(self.rk["items"], name)

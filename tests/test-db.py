@@ -52,6 +52,12 @@ class TestDatabase(object):
         assert len(current) == 1
         assert current[0] == "current"
 
+    def test_set_get_same(self):
+        inItem = items["current"]
+        assert all(d.add(**inItem))
+        outItem = d.get(inItem["name"])
+        assert inItem == outItem
+
     def test_rem(self):
         assert all(d.add(**items["current"]))
         assert all(d.rem(items["current"]["name"]))
