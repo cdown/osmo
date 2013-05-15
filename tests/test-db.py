@@ -37,40 +37,43 @@ class TestDatabase(object):
         d.r.flushdb()
 
     def test_add(self):
-        assert d.add(**items["current"])
+        assert d.add(**items["current"]), "Unable to add item"
 
     def test_add_twice(self):
-        assert d.add(**items["current"])
-        assert not d.add(**items["current"])
+        assert d.add(**items["current"]), "Unable to add item"
+        assert not d.add(**items["current"]), "Succeeded in readding already present item"
 
     def test_current(self):
-        assert d.add(**items["current"])
-        assert d.add(**items["past"])
-        assert d.add(**items["future"])
+        for period in ("current", "past", "future"):
+            assert d.add(**items[period]), "Unable to add item: %s" % period
 
-        current = d.current()
-        assert len(current) == 1
-        assert current[0] == "current"
+        current_items = d.current()
+        assert len(current_items) == 1, "Expected only 1 current item, but got %d" % len(current_items)
+        assert current_items[0] == "current", "Got an item which should not be considered current: %s" % current_items[0]
 
     def test_set_get_same(self):
         inItem = items["current"]
-        assert d.add(**inItem)
+        assert d.add(**inItem), "Unable to item"
         outItem = d.get(inItem["name"])
-        assert inItem == outItem
+        assert inItem == outItem, """Put in "%r", but got "%r" instead""" % (initem, outItem)
 
     def test_span(self):
-        item = items["current"]
-        assert d.add(**item)
-        assert d.span(item["name"]) == item["span"]
+        inItem = items["current"]
+        inSpan = inItem["span"]
+        assert d.add(**inItem), "Unable to add item"
+        outSpan = d.span(inItem["name"])
+        assert inSpan == outSpan, """Put in span "%d", but got "%d" instead""" % (inSpan, outSpan)
 
     def test_rank(self):
-        item = items["current"]
-        assert d.add(**item)
-        assert d.rank(item["name"]) == item["rank"]
+        inItem = items["current"]
+        inRank = inItem["rank"]
+        assert d.add(**inItem), "Unable to add item"
+        outRank = d.rank(inItem["name"])
+        assert inRank == outRank, """Put in rank "%d", but got "%d" instead""" % (inRank, outRank)
 
     def test_rem(self):
-        assert d.add(**items["current"])
-        assert d.rem(items["current"]["name"])
+        assert d.add(**items["current"]), "Unable to add item"
+        assert d.rem(items["current"]["name"]), "Unable to remove item"
 
     def test_rem_nonexistent(self):
-        assert not d.rem(items["current"]["name"])
+        assert not d.rem(items["current"]["name"]), "Removed nonexistent item"
