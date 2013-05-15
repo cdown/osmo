@@ -22,7 +22,7 @@ class Database(object):
         p.zadd(self.rk["end"],   name, end)
         p.zadd(self.rk["span"],  name, span)
         p.zadd(self.rk["rank"],  name, rank)
-        return p.execute()
+        return all(p.execute())
 
     def get(self, name):
         p = self.r.pipeline()
@@ -46,20 +46,21 @@ class Database(object):
         p.zrem(self.rk["end"],   name)
         p.zrem(self.rk["span"],  name)
         p.zrem(self.rk["rank"],  name)
-        return p.execute()
+        return all(p.execute())
 
     def current(self):
         now = int(time.time())
         p = self.r.pipeline()
         p.zrangebyscore(self.rk["start"], "-inf", now)
         p.zrangebyscore(self.rk["end"], now, "+inf")
+        current_items = set.intersection(*map(set, p.execute()))
         return sorted(
-            set.intersection(*map(set, p.execute())),
-            key=lambda name: self.item_rank(name)
+            current_items,
+            key=lambda name: self.get_rank(name)
         )
 
-    def item_rank(self, name):
+    def get_rank(self, name):
         return self.r.zscore(self.rk["rank"], name)
 
-    def item_span(self, name):
+    def get_span(self, name):
         return self.r.zscore(self.rk["span"], name)

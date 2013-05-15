@@ -37,16 +37,16 @@ class TestDatabase(object):
         d.r.flushdb()
 
     def test_add(self):
-        assert all(d.add(**items["current"]))
+        assert d.add(**items["current"])
 
     def test_add_twice(self):
-        assert all(d.add(**items["current"]))
-        assert not any(d.add(**items["current"]))
+        assert d.add(**items["current"])
+        assert not d.add(**items["current"])
 
     def test_current(self):
-        assert all(d.add(**items["current"]))
-        assert all(d.add(**items["past"]))
-        assert all(d.add(**items["future"]))
+        assert d.add(**items["current"])
+        assert d.add(**items["past"])
+        assert d.add(**items["future"])
 
         current = d.current()
         assert len(current) == 1
@@ -54,18 +54,18 @@ class TestDatabase(object):
 
     def test_set_get_same(self):
         inItem = items["current"]
-        assert all(d.add(**inItem))
+        assert d.add(**inItem)
         outItem = d.get(inItem["name"])
         assert inItem == outItem
 
     def test_span(self):
         item = items["current"]
-        assert all(d.add(**item))
-        assert d.item_span(item["name"]) == item["span"]
+        assert d.add(**item)
+        assert d.get_span(item["name"]) == item["span"]
 
     def test_rem(self):
-        assert all(d.add(**items["current"]))
-        assert all(d.rem(items["current"]["name"]))
+        assert d.add(**items["current"])
+        assert d.rem(items["current"]["name"])
 
     def test_rem_nonexistent(self):
-        assert not any(d.rem(items["current"]["name"]))
+        assert not d.rem(items["current"]["name"])
