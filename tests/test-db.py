@@ -63,6 +63,11 @@ class TestDatabase(object):
         assert d.add(**item)
         assert d.get_span(item["name"]) == item["span"]
 
+    def test_rank(self):
+        item = items["current"]
+        assert d.add(**item)
+        assert d.get_rank(item["name"]) == item["rank"]
+
     def test_rem(self):
         assert d.add(**items["current"])
         assert d.rem(items["current"]["name"])
