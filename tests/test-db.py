@@ -53,7 +53,7 @@ class TestDatabase(object):
 
     def test_set_get_same(self):
         inItem = items["current"]
-        assert d.add(**inItem), "Unable to item"
+        assert d.add(**inItem), "Unable to add item"
         outItem = d.get(inItem["name"])
         assert inItem == outItem, """Put in "%r", but got "%r" instead""" % (initem, outItem)
 
