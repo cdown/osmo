@@ -56,11 +56,11 @@ class Database(object):
         current_items = set.intersection(*map(set, p.execute()))
         return sorted(
             current_items,
-            key=lambda name: self.get_rank(name)
+            key=lambda name: self.rank(name)
         )
 
-    def get_rank(self, name):
+    def rank(self, name):
         return self.r.zscore(self.rk["rank"], name)
 
-    def get_span(self, name):
+    def span(self, name):
         return self.r.zscore(self.rk["span"], name)
