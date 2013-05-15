@@ -5,7 +5,5 @@ python:
     - "3.3"
 services:
     - redis-server
-install:
-    - "pip install --use-mirrors -r requirements.txt"
-    - "pip install --use-mirrors coverage"
-script: "nosetests --with-coverage --cover-package osmo"
+script:
+    - nosetests
