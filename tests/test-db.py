@@ -52,24 +52,24 @@ class TestDatabase(object):
         assert current_items[0] == "current", "Got an item which should not be considered current: %s" % current_items[0]
 
     def test_set_get_same(self):
-        inItem = items["current"]
-        assert all(d.add(**inItem)), "Unable to add item"
-        outItem = d.get(inItem["name"])
-        assert inItem == outItem, """Put in "%r", but got "%r" instead""" % (initem, outItem)
+        item_in = items["current"]
+        assert all(d.add(**item_in)), "Unable to add item"
+        item_out = d.get(item_in["name"])
+        assert item_in == item_out, """Put in "%r", but got "%r" instead""" % (item_in, item_out)
 
     def test_span(self):
-        inItem = items["current"]
-        inSpan = inItem["span"]
-        assert all(d.add(**inItem)), "Unable to add item"
-        outSpan = d.span(inItem["name"])
-        assert inSpan == outSpan, """Put in span "%d", but got "%d" instead""" % (inSpan, outSpan)
+        item_in = items["current"]
+        span_in = item_in["span"]
+        assert all(d.add(**item_in)), "Unable to add item"
+        span_out = d.span(item_in["name"])
+        assert span_in == span_out, """Put in span "%d", but got "%d" instead""" % (span_in, span_out)
 
     def test_rank(self):
-        inItem = items["current"]
-        inRank = inItem["rank"]
-        assert all(d.add(**inItem)), "Unable to add item"
-        outRank = d.rank(inItem["name"])
-        assert inRank == outRank, """Put in rank "%d", but got "%d" instead""" % (inRank, outRank)
+        item_in = items["current"]
+        rank_in = item_in["rank"]
+        assert all(d.add(**item_in)), "Unable to add item"
+        rank_out = d.rank(item_in["name"])
+        assert rank_in == rank_out, """Put in rank "%d", but got "%d" instead""" % (rank_in, rank_out)
 
     def test_rem(self):
         assert all(d.add(**items["current"])), "Unable to add item"
