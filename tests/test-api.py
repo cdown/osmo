@@ -51,6 +51,8 @@ class TestAPI(object):
 
     def test_media(self):
         media_dir = _at_script_dir("media")
-        res = urlopen("http://localhost:8080/media/current.jpg").read()
-        with open(os.path.join(media_dir, "current.jpg"), "rb") as f:
-            assert res == f.read()
+
+        for filename in os.listdir(media_dir):
+            res = urlopen("http://localhost:8080/media/%s" % filename).read()
+            with open(os.path.join(media_dir, filename), "rb") as f:
+                assert res == f.read()
