@@ -5,7 +5,6 @@
 import argparse
 import bottle
 import db
-import fs
 
 @bottle.get("/current")
 def items():
@@ -14,10 +13,14 @@ def items():
 @bottle.get("/media/:name")
 @bottle.validate(name=str)
 def media(name):
-    return bottle.static_file(name, root=f.d["media"])
+    return bottle.static_file(name, root=media_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "mediadir",
+        help="Media directory.",
+    )
     parser.add_argument(
         "--live",
         help="Use the live database instead of testing. (Dangerous!)",
@@ -25,7 +28,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     is_test = not args.live
+    media_dir = args.mediadir
 
     d = db.Database(test=is_test)
-    f = fs.Filesystem()
     bottle.run(host='0.0.0.0', port=8080, debug=is_test)
