@@ -7,15 +7,9 @@ import bottle
 import db
 import fs
 
-def _ok(data):
-    return {
-        "status": "ok",
-        "data": data
-    }
-
 @bottle.get("/current")
 def items():
-    return _ok(d.current())
+    return { "items": d.current() }
 
 @bottle.get("/media/:name")
 @bottle.validate(name=str)
