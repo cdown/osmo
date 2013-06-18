@@ -6,7 +6,7 @@ python:
 services:
     - redis-server
 before_script:
-    - osmo/api.py tests/media/ &
+    - osmo/api.py tests/media/ >/dev/null 2>&1 &
     - sleep 2
 script:
     - nosetests
