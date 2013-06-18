@@ -20,10 +20,7 @@ def items():
 @bottle.get("/media/:name")
 @bottle.validate(name=str)
 def media(name):
-    try:
-        return f.media(name).read()
-    except (IOError, OSError):
-        bottle.abort(404, "Nonexistent media")
+    return bottle.static_file(name, root=f.d["media"])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
