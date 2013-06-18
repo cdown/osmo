@@ -48,3 +48,9 @@ class TestAPI(object):
         res = urlopen("http://localhost:8080/current")
         res_json = json.loads(res.read().decode("utf8"))
         assert res_json == { "items": [ "current.jpg" ] }, res_json
+
+    def test_media(self):
+        media_dir = _at_script_dir("media")
+        res = urlopen("http://localhost:8080/media/current.jpg").read()
+        with open(os.path.join(media_dir, "current.jpg"), "rb") as f:
+            assert res == f.read()
