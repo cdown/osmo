@@ -13,7 +13,7 @@ def _ok(data):
         "data": data
     }
 
-@bottle.get("/items")
+@bottle.get("/current")
 def items():
     return _ok(d.current())
 
