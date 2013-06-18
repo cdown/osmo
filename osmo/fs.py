@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import osmo.db
 import shutil
 import tempfile
 
@@ -15,8 +14,8 @@ class Filesystem(object):
     def _cdir(self, name, path):
         return os.path.join(self.d[name], path)
 
-    def media_exists(self, name):
-        return os.path.isfile(self._cdir("media", name))
+    def media(self, name):
+        return open(self._cdir("media", name), "rb")
 
     def rem(self, name):
         os.remove(self._cdir("media", name))
