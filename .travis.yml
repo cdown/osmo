@@ -5,5 +5,8 @@ python:
     - "3.3"
 services:
     - redis-server
+before_script:
+    - osmo/api.py tests/media/ &
+    - sleep 2
 script:
     - nosetests
