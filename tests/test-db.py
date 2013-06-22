@@ -49,7 +49,8 @@ class TestDatabase(object):
 
         current_items = d.current()
         assert len(current_items) == 1, "Expected only 1 current item, but got %d" % len(current_items)
-        assert current_items[0] == "current", "Got an item which should not be considered current: %s" % current_items[0]
+        assert len(current_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(current_items[0])
+        assert current_items[0][0] == "current", "Got an item which should not be considered current: %s" % current_items[0]
 
     def test_set_get_same(self):
         item_in = items["current"]

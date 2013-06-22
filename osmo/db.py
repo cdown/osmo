@@ -73,9 +73,11 @@ class Database(object):
         current_items = set.intersection(started, not_ended)
         l.debug("Intersection: %s" % ", ".join(current_items))
 
+        current_spans = [ (name, self.span(name)) for name in current_items ]
+
         return sorted(
-            current_items,
-            key=lambda name: self.rank(name)
+            current_spans,
+            key=lambda span: self.rank(span[0])
         )
 
     def rank(self, name):
