@@ -47,7 +47,7 @@ class TestAPI(object):
     def test_items(self):
         res = urlopen("http://localhost:8080/current")
         res_json = json.loads(res.read().decode("utf8"))
-        assert res_json == { "items": [ "current.jpg" ] }, res_json
+        assert res_json == { "items": [[ "current.jpg", 5.0 ]] }, res_json
 
     def test_media(self):
         media_dir = _at_script_dir("media")
