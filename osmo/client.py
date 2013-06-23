@@ -5,9 +5,9 @@ import flask
 import redis
 
 app = flask.Flask(__name__)
-r = redis.Redis()
 
 def event_stream():
+    r = redis.Redis()
     ps = r.pubsub()
     ps.subscribe("osmo")
     for message in ps.listen():
