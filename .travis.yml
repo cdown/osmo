@@ -7,6 +7,6 @@ services:
     - redis-server
 before_script:
     - 'osmo/client.py "$PWD/tests/media/" >/dev/null 2>&1 &'
-    - sleep 2
+    - 'while ! curl localhost:8000 >/dev/null 2>&1; do sleep 2; done'
 script:
     - nosetests
