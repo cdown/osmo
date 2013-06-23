@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 import flask
 import redis
 
@@ -33,5 +34,11 @@ def home():
 </script>
 """
 
+@app.route("/media/<path:name>", methods=[ "GET" ])
+def media(name):
+    return flask.send_from_directory(media_dir, name)
+
 if __name__ == "__main__":
+    # TODO: Get media dir from config file
+    media_dir = sys.argv[1]
     app.run(port=8000, debug=True)
