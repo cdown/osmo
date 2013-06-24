@@ -5,7 +5,7 @@ python:
 services:
     - redis-server
 before_script:
-    - 'gunicorn --worker-class=gevent -w 4 -t 99999 osmo.client:app >/dev/null 2>&1 &'
+    - 'osmo/client.py "$PWD/tests/media/" >/dev/null 2>&1 &'
     - 'while ! curl localhost:8000 >/dev/null 2>&1; do sleep 2; done'
 script:
     - nosetests
