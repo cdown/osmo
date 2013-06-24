@@ -12,6 +12,7 @@ if __name__ == "__main__":
         current = d.current()
         if not current:
             time.sleep(5)
+            continue
 
         for name, span in d.current():
             r.publish("osmo", name)
