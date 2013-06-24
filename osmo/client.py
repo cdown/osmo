@@ -21,13 +21,29 @@ def stream():
 def home():
     return """
 <!doctype html>
-<pre id="out"></pre>
+<style type="text/css">
+    body {
+        background-attachment: fixed;
+        background-position: 50% 50%;
+        background-repeat: no-repeat no-repeat;
+    }
+
+    .constrainHeight {
+        background-size: auto 100%;
+    }
+
+    .constrainWidth {
+        background-size: 100% auto;
+    }
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
 <script>
     function sse() {
-        var source = new EventSource('/stream');
-        var out = document.getElementById('out');
-        source.onmessage = function(e) {
-            out.innerHTML = e.data + '\\n' + out.innerHTML;
+        var stream = new EventSource("/stream");
+        stream.onmessage = function(e) {
+            $("body").css("background-image",
+                "url(/media/" + e.data + ")"
+            );
         };
     }
     sse();
