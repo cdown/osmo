@@ -1,3 +1,5 @@
 redis
 nose
 flask
+gunicorn
+gevent
