@@ -16,17 +16,17 @@ class Database(object):
             "items": "%s:items" % self.keyspace,
             "start": "%s:start" % self.keyspace,
             "end":   "%s:end"   % self.keyspace,
-            "span":  "%s:span"  % self.keyspace,
+            "duration":  "%s:duration"  % self.keyspace,
             "rank":  "%s:rank"  % self.keyspace,
         }
 
-    def add(self, name, start, end, span, rank):
-        l.debug("ADD: %s (%d %d %d %d)" % (name, start, end, span, rank))
+    def add(self, name, start, end, duration, rank):
+        l.debug("ADD: %s (%d %d %d %d)" % (name, start, end, duration, rank))
         p = self.r.pipeline()
         p.sadd(self.rk["items"], name)
         p.zadd(self.rk["start"], name, start)
         p.zadd(self.rk["end"],   name, end)
-        p.zadd(self.rk["span"],  name, span)
+        p.zadd(self.rk["duration"],  name, duration)
         p.zadd(self.rk["rank"],  name, rank)
         return p.execute()
 
@@ -35,14 +35,14 @@ class Database(object):
         p = self.r.pipeline()
         p.zscore(self.rk["start"], name)
         p.zscore(self.rk["end"],   name)
-        p.zscore(self.rk["span"],  name)
+        p.zscore(self.rk["duration"],  name)
         p.zscore(self.rk["rank"],  name)
-        start, end, span, rank = p.execute()
+        start, end, duration, rank = p.execute()
         return {
             "name": name,
             "start": start,
             "end": end,
-            "span": span,
+            "duration": duration,
             "rank": rank,
         }
 
@@ -52,7 +52,7 @@ class Database(object):
         p.srem(self.rk["items"], name)
         p.zrem(self.rk["start"], name)
         p.zrem(self.rk["end"],   name)
-        p.zrem(self.rk["span"],  name)
+        p.zrem(self.rk["duration"],  name)
         p.zrem(self.rk["rank"],  name)
         return p.execute()
 
@@ -73,11 +73,11 @@ class Database(object):
         current_items = set.intersection(started, not_ended)
         l.debug("Intersection: %s" % ", ".join(current_items))
 
-        current_spans = [ (name, self.span(name)) for name in current_items ]
+        current_durations = [ (name, self.duration(name)) for name in current_items ]
 
         return sorted(
-            current_spans,
-            key=lambda span: self.rank(span[0])
+            current_durations,
+            key=lambda duration: self.rank(duration[0])
         )
 
     def rank(self, name):
@@ -85,7 +85,7 @@ class Database(object):
         l.debug("Rank of %s: %d" % (name, rank))
         return rank
 
-    def span(self, name):
-        span = self.r.zscore(self.rk["span"], name)
-        l.debug("Span of %s: %d" % (name, span))
-        return span
+    def duration(self, name):
+        duration = self.r.zscore(self.rk["duration"], name)
+        l.debug("Duration of %s: %d" % (name, duration))
+        return duration

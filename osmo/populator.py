@@ -14,6 +14,6 @@ if __name__ == "__main__":
             time.sleep(5)
             continue
 
-        for name, span in d.current():
+        for name, duration in d.current():
             r.publish("osmo", name)
-            time.sleep(span)
+            time.sleep(duration)

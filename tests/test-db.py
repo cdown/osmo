@@ -10,21 +10,21 @@ items = {
         "name": "current",
         "start": now - 1,
         "end": now + 3600,
-        "span": 5,
+        "duration": 5,
         "rank": 1,
     },
     "past":{
         "name": "past",
         "start": now - 2,
         "end": now - 1,
-        "span": 5,
+        "duration": 5,
         "rank": 1,
     },
     "future":{
         "name": "future",
         "start": now + 3600,
         "end": now + 7200,
-        "span": 5,
+        "duration": 5,
         "rank": 1,
     },
 }
@@ -58,12 +58,12 @@ class TestDatabase(object):
         item_out = d.get(item_in["name"])
         assert item_in == item_out, """Put in "%r", but got "%r" instead""" % (item_in, item_out)
 
-    def test_span(self):
+    def test_duration(self):
         item_in = items["current"]
-        span_in = item_in["span"]
+        duration_in = item_in["duration"]
         assert all(d.add(**item_in)), "Unable to add item"
-        span_out = d.span(item_in["name"])
-        assert span_in == span_out, """Put in span "%d", but got "%d" instead""" % (span_in, span_out)
+        duration_out = d.duration(item_in["name"])
+        assert duration_in == duration_out, """Put in duration "%d", but got "%d" instead""" % (duration_in, duration_out)
 
     def test_rank(self):
         item_in = items["current"]
