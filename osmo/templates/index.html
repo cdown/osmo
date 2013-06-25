@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>zenu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="static/css/style.css" rel="stylesheet" media="screen">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+      <div class="span12 center top-offset">
+<div class="btn-toolbar">
+    <button class="btn btn-primary">New item</button>
+</div>
+<div class="well">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Name</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Duration</th>
+          <th style="width: 36px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in items %}
+        <tr>
+            <td>{{ item.priority }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.start }}</td>
+            <td>{{ item.end }}</td>
+            <td>{{ item.duration }}</td>
+          <td>
+              <a href="#myModal" role="button" data-toggle="modal"><i class="icon-remove"></i></a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+</div>
+<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Delete Confirmation</h3>
+    </div>
+    <div class="modal-body">
+        <p class="error-text">Are you sure you want to delete the user?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+    </div>
+</div>
+</div>
+  </body>
+</html>
