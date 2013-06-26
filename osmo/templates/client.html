@@ -7,9 +7,9 @@
     }
 
     img#loader {
-        // This is only used to generate "ready" fire effects so that we know
-        // when we can fire scale_bg(). It should not be seen directly by the
-        // user.
+        // This is only used to generate the prerequisites for .load() //
+        // callbacks so that we know when we can fire scale_bg(). It should not
+        // be seen directly by the user.
         display: none;
     }
 
@@ -21,15 +21,16 @@
         background-size: 100% auto;
     }
 </style>
+
+<img id="loader" />
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
 <script>
-    function scale_bg(url) {
-        var img = new Image;
-        img.src = url;
-        var imageAspectRatio = img.width / img.height;
-        var backgroundAspectRatio = $(window).width() / $(window).height();
+    function scale_bg(width, height) {
+        var img_aspect = width / height;
+        var win_aspect = $(window).width() / $(window).height();
 
-        if (imageAspectRatio < backgroundAspectRatio) {
+        if (img_aspect < win_aspect) {
             $("body")
                 .removeClass()
                 .addClass('constrainHeight');
@@ -39,14 +40,26 @@
                 .addClass('constrainWidth');
         }
     }
-    function sse() {
+
+    function img_load_hook() {
+        $("img#loader").load(function() {
+            var url = $(this).attr("src");
+
+            $("body").css("background-image",
+                "url(" + url + ")"
+            );
+            scale_bg($(this).width(), $(this).height());
+        })
+    }
+
+    function begin_sse() {
         var stream = new EventSource("{{ url_for('stream') }}");
         stream.onmessage = function(e) {
-            $("body").css("background-image",
-            "url({{ url_for('media', name='') }}" + e.data + ")"
-            );
-            scale_bg("{{ url_for('media', name='') }}" + e.data);
+            $("img#loader")
+                .attr("src", "{{ url_for('media', name='') }}" + e.data);
         };
     }
-    sse();
+
+    img_load_hook();
+    begin_sse();
 </script>
