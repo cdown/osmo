@@ -15,7 +15,10 @@ def event_stream():
 
 @app.route("/stream", methods=[ "GET" ])
 def stream():
-    return flask.Response(event_stream(), mimetype="text/event-stream")
+    return flask.Response(
+        event_stream(),
+        mimetype="text/event-stream"
+    )
 
 @app.route("/", methods=[ "GET" ])
 def home():
