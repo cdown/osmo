@@ -6,6 +6,13 @@
         background-repeat: no-repeat no-repeat;
     }
 
+    img#loader {
+        // This is only used to generate "ready" fire effects so that we know
+        // when we can fire scale_bg(). It should not be seen directly by the
+        // user.
+        display: none;
+    }
+
     .constrainHeight {
         background-size: auto 100%;
     }
