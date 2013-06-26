@@ -14,11 +14,11 @@
         display: none;
     }
 
-    .constrainHeight {
+    .constrain-height {
         background-size: auto 100%;
     }
 
-    .constrainWidth {
+    .constrain-width {
         background-size: 100% auto;
     }
 </style>
@@ -34,11 +34,11 @@
         if (img_aspect < win_aspect) {
             $("body")
                 .removeClass()
-                .addClass('constrainHeight');
+                .addClass('constrain-height');
         } else {
             $("body")
                 .removeClass()
-                .addClass('constrainWidth');
+                .addClass('constrain-width');
         }
     }
 
