@@ -1,0 +1,45 @@
+<!doctype html>
+<style type="text/css">
+    body {
+        background-attachment: fixed;
+        background-position: 50% 50%;
+        background-repeat: no-repeat no-repeat;
+    }
+
+    .constrainHeight {
+        background-size: auto 100%;
+    }
+
+    .constrainWidth {
+        background-size: 100% auto;
+    }
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script>
+    function scale_bg(url) {
+        var img = new Image;
+        img.src = url;
+        var imageAspectRatio = img.width / img.height;
+        var backgroundAspectRatio = $(window).width() / $(window).height();
+
+        if (imageAspectRatio < backgroundAspectRatio) {
+            $("body")
+                .removeClass()
+                .addClass('constrainHeight');
+        } else {
+            $("body")
+                .removeClass()
+                .addClass('constrainWidth');
+        }
+    }
+    function sse() {
+        var stream = new EventSource("{{ url_for('stream') }}");
+        stream.onmessage = function(e) {
+            $("body").css("background-image",
+            "url({{ url_for('media', name='') }}" + e.data + ")"
+            );
+            scale_bg("{{ url_for('media', name='') }}" + e.data);
+        };
+    }
+    sse();
+</script>
