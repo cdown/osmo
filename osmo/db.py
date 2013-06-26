@@ -49,7 +49,7 @@ class Database(object):
         return p.execute()
 
     def current(self):
-        now = int(time.time())
+        now = time.time()
 
         p = self.r.pipeline()
         p.zrangebyscore(self.rk["start"], "-inf", now)
