@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
+"""Client and web interface for osmo."""
+
 import sys
 import flask
 import redis
+import argparse
 
 app = flask.Flask(__name__)
 r = redis.Redis()
@@ -29,6 +32,16 @@ def media(name):
     return flask.send_from_directory(media_dir, name)
 
 if __name__ == "__main__":
-    # TODO: Get media dir from config file
-    media_dir = sys.argv[1]
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "mediadir",
+        nargs="?",
+        default="/srv/osmo",
+        help="The directory to serve media files from"
+    )
+    args = parser.parse_args()
+
+    media_dir = args.mediadir
     app.run(port=8000, debug=True)
