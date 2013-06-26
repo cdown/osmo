@@ -10,6 +10,9 @@ import argparse
 app = flask.Flask(__name__)
 r = redis.Redis()
 
+# This is only eventually used when we are not being run in the Flask debugger.
+media_dir = "/srv/osmo"
+
 def event_stream():
     ps = r.pubsub()
     ps.subscribe("osmo")
