@@ -11,7 +11,6 @@ class Database(object):
         )
         self.keyspace = "osmo"
         self.rk = {
-            "items":    "%s:items"    % self.keyspace,
             "start":    "%s:start"    % self.keyspace,
             "end":      "%s:end"      % self.keyspace,
             "duration": "%s:duration" % self.keyspace,
@@ -20,7 +19,6 @@ class Database(object):
 
     def add(self, name, start, end, duration, rank):
         p = self.r.pipeline()
-        p.sadd(self.rk["items"],    name)
         p.zadd(self.rk["start"],    name, start)
         p.zadd(self.rk["end"],      name, end)
         p.zadd(self.rk["duration"], name, duration)
@@ -44,7 +42,6 @@ class Database(object):
 
     def rem(self, name):
         p = self.r.pipeline()
-        p.srem(self.rk["items"],    name)
         p.zrem(self.rk["start"],    name)
         p.zrem(self.rk["end"],      name)
         p.zrem(self.rk["duration"], name)
