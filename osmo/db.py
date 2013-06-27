@@ -61,7 +61,7 @@ class Database(object):
             items = self.r.zrangebyscore(self.rk["start"], now + 1, "+inf")
         elif state == "past":
             items = self.r.zrangebyscore(self.rk["end"], "-inf", now - 1)
-        elif state == "any":
+        elif state == "all":
             items = self.r.zrangebyscore(self.rk["start"], "-inf", "+inf")
         else:
             raise NotImplementedError("Unknown state: %s" % state)

@@ -68,9 +68,9 @@ class TestDatabase(object):
         assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
         assert my_items[0][0] == "future", "Got an item which should not be considered future: %s" % my_items[0]
 
-    def test_any(self):
+    def test_all(self):
         _add_all()
-        my_items = d.get_state(state="any")
+        my_items = d.get_state(state="all")
         assert len(my_items) == 3, "Expected 3 items, but got %d" % len(my_items)
         assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
 
