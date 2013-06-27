@@ -3,11 +3,13 @@
 """Admin interface for osmo."""
 
 import argparse
-import os
+import calendar
 import db
-import flask
 import errno
+import flask
+import os
 import sys
+import time
 import werkzeug
 
 app = flask.Flask(__name__)
@@ -17,8 +19,12 @@ d = db.Database()
 # This is only eventually used when we are not being run in the Flask debugger.
 media_dir = "/srv/osmo"
 
-def _staticDir(path):
+def _static_dir(path):
     return os.path.join(os.path.dirname(__file__), "templates/static/" + path)
+
+def _dtpicker_strptime(data):
+    stripped = time.strptime(data, "%Y-%m-%d %H:%M")
+    return calendar.timegm(stripped)
 
 @app.route("/", methods=[ "GET" ])
 def list_all():
@@ -47,8 +53,8 @@ def add():
         u_file = flask.request.files["file"]
 
         name = werkzeug.utils.secure_filename(u_file.filename)
-        start = int(flask.request.form["start"])
-        end = int(flask.request.form["end"])
+        start = _dtpicker_strptime(flask.request.form["start"])
+        end = _dtpicker_strptime(flask.request.form["end"])
         duration = int(flask.request.form["duration"])
         rank = int(flask.request.form["rank"])
 
@@ -56,22 +62,22 @@ def add():
             abort(400)
 
         u_file.save(os.path.join(media_dir, name))
-        d.add(name, start, end, rank, duration)
+        d.add(name, start, end, duration, rank)
         flask.flash("""Okay, created item "%s".""" % name)
         return flask.redirect(flask.url_for("list_all"))
     return flask.render_template("admin/add.html")
 
 @app.route('/static/js/<path:filename>')
 def static_js(filename):
-    return flask.send_from_directory(_staticDir("js"), filename)
+    return flask.send_from_directory(_static_dir("js"), filename)
 
 @app.route('/static/css/<path:filename>')
 def static_css(filename):
-    return flask.send_from_directory(_staticDir("css"), filename)
+    return flask.send_from_directory(_static_dir("css"), filename)
 
 @app.route('/static/img/<path:filename>')
 def static_img(filename):
-    return flask.send_from_directory(_staticDir("img"), filename)
+    return flask.send_from_directory(_static_dir("img"), filename)
 
 if __name__ == "__main__":
     import argparse
