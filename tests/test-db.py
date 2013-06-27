@@ -29,6 +29,10 @@ items = {
     },
 }
 
+def _add_all():
+    for period in ("active", "past", "future"):
+        assert all(d.add(**items[period])), "Unable to add item: %s" % period
+
 class TestDatabase(object):
     def setup(self):
         d.r.flushdb()
@@ -44,13 +48,31 @@ class TestDatabase(object):
         assert not any(d.add(**items["active"])), "Succeeded in readding already present item"
 
     def test_active(self):
-        for period in ("active", "past", "future"):
-            assert all(d.add(**items[period])), "Unable to add item: %s" % period
+        _add_all()
+        my_items = d.get_state(state="active")
+        assert len(my_items) == 1, "Expected 1 active item, but got %d" % len(my_items)
+        assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
+        assert my_items[0][0] == "active", "Got an item which should not be considered active: %s" % my_items[0]
 
-        active_items = d.get_state(state="active")
-        assert len(active_items) == 1, "Expected only 1 active item, but got %d" % len(active_items)
-        assert len(active_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(active_items[0])
-        assert active_items[0][0] == "active", "Got an item which should not be considered active: %s" % active_items[0]
+    def test_past(self):
+        _add_all()
+        my_items = d.get_state(state="past")
+        assert len(my_items) == 1, "Expected 1 past item, but got %d" % len(my_items)
+        assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
+        assert my_items[0][0] == "past", "Got an item which should not be considered past: %s" % my_items[0]
+
+    def test_future(self):
+        _add_all()
+        my_items = d.get_state(state="future")
+        assert len(my_items) == 1, "Expected 1 future item, but got %d" % len(my_items)
+        assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
+        assert my_items[0][0] == "future", "Got an item which should not be considered future: %s" % my_items[0]
+
+    def test_any(self):
+        _add_all()
+        my_items = d.get_state(state="any")
+        assert len(my_items) == 3, "Expected 3 items, but got %d" % len(my_items)
+        assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
 
     def test_set_get_same(self):
         item_in = items["active"]
