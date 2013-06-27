@@ -14,7 +14,11 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
+                {% if error %}
+                <div class="alert alert-error">
+                {% else %}
                 <div class="alert alert-success">
+                {% endif %}
                     {{ message }}
                 </div>
             {% endfor %}

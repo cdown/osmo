@@ -10,7 +10,7 @@ import flask
 import os
 import sys
 import time
-import werkzeug
+import werkzeug.utils
 
 app = flask.Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -32,20 +32,23 @@ def list_all():
         "admin/index.html",
         items=d.get_all_metadata(),
         active_items=d.get_state(state="active"),
+        error=flask.request.args.get("error", 0),
     )
 
-@app.route("/rem/<path:filename>", methods=[ "POST" ])
-def rem(filename):
-    filename = werkzeug.utils.secure_filename(filename)
+@app.route("/rem/<path:name>", methods=[ "GET" ])
+def rem(name):
+    name = werkzeug.utils.secure_filename(name)
     try:
-        os.remove(os.path.join(media_dir, filename))
-    except IOError as e:
+        os.remove(os.path.join(media_dir, name))
+    except OSError as e:
         if e.errno != errno.ENOENT:
             raise e
         else:
-            return "%s does not exist" % filename
-    d.rem(filename)
-    return "%s deleted" % filename
+            flask.flash("""Item "%s" does not exist!""" % name)
+            return flask.redirect(flask.url_for("list_all") + "?error=1")
+    d.rem(name)
+    flask.flash("""Okay, deleted item "%s".""" % name)
+    return flask.redirect(flask.url_for("list_all"))
 
 @app.route("/add", methods=[ "GET", "POST" ])
 def add():
@@ -65,7 +68,9 @@ def add():
         d.add(name, start, end, duration, rank)
         flask.flash("""Okay, created item "%s".""" % name)
         return flask.redirect(flask.url_for("list_all"))
-    return flask.render_template("admin/add.html")
+    return flask.render_template(
+        "admin/add.html",
+    )
 
 @app.route('/static/js/<path:filename>')
 def static_js(filename):
