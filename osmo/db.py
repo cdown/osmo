@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import datetime
 import redis
 import time
 
@@ -48,6 +49,17 @@ class Database(object):
         p.zrem(self.rk["rank"],     name)
         return p.execute()
 
+    def get_all_metadata(self):
+        names = self.r.zrangebyscore(self.rk["start"], "-inf", "+inf")
+        for name in names:
+            yield {
+                "name": name,
+                "duration": int(self.duration(name)),
+                "start": self.start(name),
+                "end": self.end(name),
+                "rank": int(self.rank(name)),
+            }
+
     def get_state(self, state="active"):
         now = time.time()
 
@@ -77,3 +89,13 @@ class Database(object):
 
     def duration(self, name):
         return self.r.zscore(self.rk["duration"], name)
+
+    def start(self, name):
+        return datetime.datetime.fromtimestamp(
+            self.r.zscore(self.rk["start"], name)
+        )
+
+    def end(self, name):
+        return datetime.datetime.fromtimestamp(
+            self.r.zscore(self.rk["end"], name)
+        )
