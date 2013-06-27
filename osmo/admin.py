@@ -59,19 +59,7 @@ def add():
         d.add(name, start, end, rank, duration)
         flask.flash("""Okay, created item "%s".""" % name)
         return flask.redirect(flask.url_for("list_all"))
-    return """
-<!doctype html>
-<title>Upload new File</title>
-<h1>Upload new File</h1>
-<form action="" method=post enctype=multipart/form-data>
-<input type=file name=file>
-<input type=text name=start>
-<input type=text name=end>
-<input type=text name=duration>
-<input type=text name=rank>
-<input type=submit value=Upload>
-</form>
-"""
+    return flask.render_template("admin/add.html")
 
 @app.route('/static/js/<path:filename>')
 def static_js(filename):
