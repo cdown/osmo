@@ -10,6 +10,17 @@
   </head>
   <body>
       <div class="span12 center top-offset">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        <hr>
+        {% endif %}
+    {% endwith %}
     <h2>Active rotation (in order)</h2>
     <table class="table">
       <thead>

@@ -11,6 +11,7 @@ import sys
 import werkzeug
 
 app = flask.Flask(__name__)
+app.secret_key = os.urandom(32)
 d = db.Database()
 
 # This is only eventually used when we are not being run in the Flask debugger.
@@ -56,7 +57,8 @@ def add():
 
         u_file.save(os.path.join(media_dir, name))
         d.add(name, start, end, rank, duration)
-        flask.redirect(flask.url_for("list_all"))
+        flask.flash("""Okay, created item "%s".""" % name)
+        return flask.redirect(flask.url_for("list_all"))
     return """
 <!doctype html>
 <title>Upload new File</title>
