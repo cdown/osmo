@@ -8,7 +8,9 @@ services:
 install:
     pip install -r requirements-minimal.txt --use-mirrors
 before_script:
-    - 'osmo/client.py "$PWD/tests/media/" >/dev/null 2>&1 &'
-    - 'while ! curl localhost:8000 >/dev/null 2>&1; do sleep 2; done'
+    - 'osmo/client.py "$PWD/tests/media/" >/tmp/clientlog 2>&1 &'
+    - 'i=0 ; while ! curl localhost:8000 >/dev/null 2>&1; do [ "$i" -gt 5 ] && exit 1; sleep 2; let i++; done'
+after_failure:
+    - cat /tmp/clientlog
 script:
     - nosetests
