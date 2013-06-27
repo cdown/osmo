@@ -6,6 +6,7 @@ import argparse
 import os
 import db
 import flask
+import errno
 import sys
 import werkzeug
 
@@ -31,8 +32,11 @@ def rem(filename):
     filename = werkzeug.utils.secure_filename(filename)
     try:
         os.remove(os.path.join(media_dir, filename))
-    except:
-        return "%s does not exist" % filename
+    except IOError as e:
+        if e.errno != errno.ENOENT:
+            raise e
+        else:
+            return "%s does not exist" % filename
     d.rem(filename)
     return "%s deleted" % filename
 
