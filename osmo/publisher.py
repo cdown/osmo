@@ -9,7 +9,7 @@ d = db.Database()
 
 if __name__ == "__main__":
     while True:
-        active = d.active()
+        active = d.get_state(state="active")
         if not active:
             time.sleep(5)
             continue

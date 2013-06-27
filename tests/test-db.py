@@ -47,7 +47,7 @@ class TestDatabase(object):
         for period in ("active", "past", "future"):
             assert all(d.add(**items[period])), "Unable to add item: %s" % period
 
-        active_items = d.active()
+        active_items = d.get_state(state="active")
         assert len(active_items) == 1, "Expected only 1 active item, but got %d" % len(active_items)
         assert len(active_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(active_items[0])
         assert active_items[0][0] == "active", "Got an item which should not be considered active: %s" % active_items[0]

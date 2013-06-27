@@ -48,19 +48,27 @@ class Database(object):
         p.zrem(self.rk["rank"],     name)
         return p.execute()
 
-    def active(self):
+    def get_state(self, state="active"):
         now = time.time()
 
-        p = self.r.pipeline()
-        p.zrangebyscore(self.rk["start"], "-inf", now)
-        p.zrangebyscore(self.rk["end"], now, "+inf")
-        started, not_ended = map(set, p.execute())
+        if state == "active":
+            p = self.r.pipeline()
+            p.zrangebyscore(self.rk["start"], "-inf", now)
+            p.zrangebyscore(self.rk["end"], now, "+inf")
+            started, not_ended = map(set, p.execute())
+            items = started & not_ended
+        elif state == "future":
+            items = self.r.zrangebyscore(self.rk["start"], now + 1, "+inf")
+        elif state == "past":
+            items = self.r.zrangebyscore(self.rk["end"], "-inf", now - 1)
+        elif state == "any":
+            items = self.r.zrangebyscore(self.rk["start"], "-inf", "+inf")
+        else:
+            raise NotImplementedError("Unknown state: %s" % state)
 
-        active_items = started & not_ended
-        active_durations = [ (name, self.duration(name)) for name in active_items ]
-
+        durations = [ (name, self.duration(name)) for name in items ]
         return sorted(
-            active_durations,
+            durations,
             key=lambda duration: self.rank(duration[0]),
         )
 
