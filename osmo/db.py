@@ -48,7 +48,7 @@ class Database(object):
         p.zrem(self.rk["rank"],     name)
         return p.execute()
 
-    def current(self):
+    def active(self):
         now = time.time()
 
         p = self.r.pipeline()
@@ -56,11 +56,11 @@ class Database(object):
         p.zrangebyscore(self.rk["end"], now, "+inf")
         started, not_ended = map(set, p.execute())
 
-        current_items = started & not_ended
-        current_durations = [ (name, self.duration(name)) for name in current_items ]
+        active_items = started & not_ended
+        active_durations = [ (name, self.duration(name)) for name in active_items ]
 
         return sorted(
-            current_durations,
+            active_durations,
             key=lambda duration: self.rank(duration[0]),
         )
 
