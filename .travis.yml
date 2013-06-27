@@ -1,6 +1,5 @@
 language: python
 python:
-    - "2.6"
     - "2.7"
     - "3.3"
 services:
@@ -8,9 +7,7 @@ services:
 install:
     pip install -r requirements-minimal.txt --use-mirrors
 before_script:
-    - 'osmo/client.py "$PWD/tests/media/" >/tmp/clientlog 2>&1 &'
-    - 'i=0 ; while ! curl localhost:8000 >/dev/null 2>&1; do [ "$i" -gt 5 ] && exit 1; sleep 2; let i++; done'
-after_script:
-    - cat /tmp/clientlog
+    - 'osmo/client.py "$PWD/tests/media/" >/dev/null 2>&1 &'
+    - 'while ! curl localhost:8000 >/dev/null 2>&1; do sleep 2; done'
 script:
     - nosetests

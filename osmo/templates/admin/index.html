@@ -67,12 +67,25 @@
             <td>{{ item.end }}</td>
             <td>{{ item.duration }}</td>
           <td>
-              <a href="{{ url_for('rem', name=item.name) }}" role="button"><i class="icon-remove"></i></a>
+              <a href="#myModal" role="button" data-toggle="modal"><i class="icon-remove"></i></a>
           </td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
+<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Delete Confirmation</h3>
+    </div>
+    <div class="modal-body">
+        <p class="error-text">Are you sure you want to delete the user?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+    </div>
+</div>
 </div>
   </body>
 </html>
