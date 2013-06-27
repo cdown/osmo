@@ -24,7 +24,7 @@ def _static_dir(path):
 
 def _dtpicker_strptime(data):
     stripped = time.strptime(data, "%Y-%m-%d %H:%M")
-    return calendar.timegm(stripped)
+    return time.mktime(stripped)
 
 @app.route("/", methods=[ "GET" ])
 def list_all():
