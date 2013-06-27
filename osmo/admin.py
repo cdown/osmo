@@ -40,6 +40,37 @@ def rem(filename):
     d.rem(filename)
     return "%s deleted" % filename
 
+@app.route("/add", methods=[ "GET", "POST" ])
+def add():
+    if flask.request.method == "POST":
+        u_file = flask.request.files["file"]
+
+        name = werkzeug.utils.secure_filename(u_file.filename)
+        start = int(flask.request.form["start"])
+        end = int(flask.request.form["end"])
+        duration = int(flask.request.form["duration"])
+        rank = int(flask.request.form["rank"])
+
+        if not u_file:
+            abort(400)
+
+        u_file.save(os.path.join(media_dir, name))
+        d.add(name, start, end, rank, duration)
+        flask.redirect(flask.url_for("list_all"))
+    return """
+<!doctype html>
+<title>Upload new File</title>
+<h1>Upload new File</h1>
+<form action="" method=post enctype=multipart/form-data>
+<input type=file name=file>
+<input type=text name=start>
+<input type=text name=end>
+<input type=text name=duration>
+<input type=text name=rank>
+<input type=submit value=Upload>
+</form>
+"""
+
 @app.route('/static/js/<path:filename>')
 def static_js(filename):
     return flask.send_from_directory(_staticDir("js"), filename)
