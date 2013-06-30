@@ -1,6 +1,4 @@
 redis
 nose
 flask
-gevent
-gunicorn
 argparse
