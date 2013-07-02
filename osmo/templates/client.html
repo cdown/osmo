@@ -42,6 +42,13 @@
         }
     }
 
+    function resize_hook() {
+        $(window).resize(function() {
+            var img = $("img#loader");
+            scale_bg(img.width(), img.height());
+        });
+    }
+
     function img_load_hook() {
         $("img#loader").load(function() {
             var url = $(this).attr("src");
@@ -62,5 +69,6 @@
     }
 
     img_load_hook();
+    resize_hook();
     begin_sse();
 </script>
