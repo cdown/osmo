@@ -17,7 +17,12 @@ def event_stream():
     ps = r.pubsub()
     ps.subscribe("osmo")
     for message in ps.listen():
-        yield "data: %s\n\n" % message["data"]
+        try:
+            data = message["data"].decode("utf8")
+        except AttributeError:
+            data = message["data"]
+
+        yield "data: %s\n\n" % data
 
 @app.route("/stream", methods=[ "GET" ])
 def stream():
