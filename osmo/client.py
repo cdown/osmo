@@ -44,7 +44,14 @@ if __name__ == "__main__":
         default="/srv/osmo",
         help="The directory to serve media files from"
     )
+    parser.add_argument(
+        "--test",
+        action="store_true",
+        help="Whether to use the testing database"
+    )
     args = parser.parse_args()
 
+    r = redis.Redis(db=int(args.test))
     media_dir = args.mediadir
+
     app.run(port=8000, debug=True)

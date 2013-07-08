@@ -1,3 +1,4 @@
-redis
-flask
 argparse
+flask
+redis
+sseclient

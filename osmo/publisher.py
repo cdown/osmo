@@ -3,9 +3,10 @@
 import db
 import redis
 import time
+import sys
 
 r = redis.Redis()
-d = db.Database()
+d = db.Database(test=sys.argv[1] == "--test")
 
 if __name__ == "__main__":
     while True:
