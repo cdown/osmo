@@ -87,9 +87,9 @@ class TestClient(object):
             current_time = time.time()
 
             if i % 2 == 0:
-                assert message.data == "active2"
+                assert message.data == "active2", "Expected active2, got %s" % message.data
             else:
-                assert message.data == "active1"
+                assert message.data == "active1", "Expected active1, got %s" % message.data
 
             if last_item:
                 print(round(current_time - last_time))
