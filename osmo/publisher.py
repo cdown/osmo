@@ -13,6 +13,7 @@ if __name__ == "__main__":
         active = d.get_state(state="active")
         if not active:
             print("No active items, sleeping for 5 seconds")
+            r.publish("osmo", "__empty__")
             time.sleep(5)
             continue
 

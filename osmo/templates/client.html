@@ -63,8 +63,12 @@
     function begin_sse() {
         var stream = new EventSource("{{ url_for('stream') }}");
         stream.onmessage = function(e) {
-            $("img#loader")
-                .attr("src", "{{ url_for('media', name='') }}" + e.data);
+            if (e.data === "__empty__") {
+                $("body").removeAttr("background-image");
+            } else {
+                $("img#loader")
+                    .attr("src", "{{ url_for('media', name='') }}" + e.data);
+            }
         };
     }
 
