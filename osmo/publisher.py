@@ -5,8 +5,13 @@ import redis
 import time
 import sys
 
-r = redis.Redis()
-d = db.Database(test=sys.argv[1] == "--test")
+if len(sys.argv) > 1 and sys.argv[1] == "--test":
+    test = True
+else:
+    test = False
+
+r = redis.Redis(port=6379 if not test else 28692)
+d = db.Database(test=test)
 
 if __name__ == "__main__":
     while True:

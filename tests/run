@@ -1,0 +1,28 @@
+#!/bin/bash
+
+wait=2
+redisPort=28692
+
+if [[ $0 == /* ]]; then
+    location=${0%/*}
+else
+    location=$PWD/${0#./}
+    location=${location%/*}
+fi
+
+location+="/.."
+
+redis-server - >/dev/null << EOF &
+daemonize no
+port $redisPort
+EOF
+
+apiPid="$( "$location"/osmo/client.py "$location/tests/media/" >/dev/null 2>&1 & echo "$!" )"
+publisher_pid="$( "$location"/osmo/publisher.py --test >/dev/null 2>&1 & echo "$!" )"
+
+trap 'kill "$apiPid" ; kill "$publisher_pid" ; redis-cli -p "$redisPort" shutdown' 0
+
+printf 'Waiting %d seconds for services to finish starting...\n\n' "$wait"
+sleep "$wait"
+
+nosetests "$@"

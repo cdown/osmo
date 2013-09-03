@@ -7,7 +7,7 @@ import time
 class Database(object):
     def __init__(self, test=False):
         self.r = redis.Redis(
-            db=1 if test else 0,
+            port=6379 if not test else 28692,
             decode_responses=True,
         )
         self.keyspace = "osmo"
