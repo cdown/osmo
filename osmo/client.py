@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-"""Client and web interface for osmo."""
+"""
+Client interface.
+"""
 
 import sys
 import flask

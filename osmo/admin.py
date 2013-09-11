@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Admin interface for osmo.
+Admin interface.
 """
 
 import argparse
