@@ -1,11 +1,22 @@
 #!/usr/bin/env python
 
+"""
+Database functions.
+"""
+
 import datetime
 import redis
 import time
 
+
 class Database(object):
     def __init__(self, test=False):
+        """
+        Initialise the Redis backend, and populate the key names.
+
+        :param test: whether to use the test database or not
+        """
+
         self.r = redis.Redis(
             port=6379 if not test else 28692,
             decode_responses=True,
@@ -19,6 +30,18 @@ class Database(object):
         }
 
     def add(self, name, start, end, duration, rank):
+        """
+        Add a slide.
+
+        :param name: the slide name
+        :param start: when the slide should become part of the queue
+        :param end: when the slide should leave the queue
+        :param duration: the duration to display the slide in one queue loop
+        :param rank: the rank/priority of display
+        :return: a list, where all elements will evaluate to True if each
+                 call executed correctly
+        """
+
         p = self.r.pipeline()
         p.zadd(self.rk["start"],    name, start)
         p.zadd(self.rk["end"],      name, end)
@@ -27,6 +50,13 @@ class Database(object):
         return p.execute()
 
     def get(self, name):
+        """
+        Return the metadata for a slide.
+
+        :param name: the slide name
+        :return: a dict containing slide information
+        """
+
         p = self.r.pipeline()
         p.zscore(self.rk["start"],    name)
         p.zscore(self.rk["end"],      name)
@@ -42,6 +72,14 @@ class Database(object):
         }
 
     def rem(self, name):
+        """
+        Remove a slide.
+
+        :param name: the slide name
+        :return: a list, where all elements will evaluate to True if each
+                 call executed correctly
+        """
+
         p = self.r.pipeline()
         p.zrem(self.rk["start"],    name)
         p.zrem(self.rk["end"],      name)
@@ -50,6 +88,10 @@ class Database(object):
         return p.execute()
 
     def get_all_metadata(self):
+        """
+        Return a generator with information about all slides.
+        """
+
         names = self.r.zrangebyscore(self.rk["start"], "-inf", "+inf")
         for name in names:
             yield {
@@ -61,6 +103,13 @@ class Database(object):
             }
 
     def get_state(self, state="active"):
+        """
+        Return the names of all slides in a state.
+
+        :param state: which state to return slides for
+        :returns: the names of all slides in this state
+        """
+
         now = time.time()
 
         if state == "active":
@@ -78,24 +127,52 @@ class Database(object):
         else:
             raise NotImplementedError("Unknown state: %s" % state)
 
-        durations = [ (name, self.duration(name)) for name in items ]
+        durations = [(name, self.duration(name)) for name in items]
         return sorted(
             durations,
             key=lambda duration: self.rank(duration[0]),
         )
 
     def rank(self, name):
+        """
+        Return the rank of a slide.
+
+        :param name: the slide name
+        :returns: the slide rank
+        """
+
         return self.r.zscore(self.rk["rank"], name)
 
     def duration(self, name):
+        """
+        Return the duration of a slide.
+
+        :param name: the slide name
+        :returns: the slide duration
+        """
+
         return self.r.zscore(self.rk["duration"], name)
 
     def start(self, name):
+        """
+        Return the start time of a slide.
+
+        :param name: the slide name
+        :returns: the slide start time
+        """
+
         return datetime.datetime.fromtimestamp(
             self.r.zscore(self.rk["start"], name)
         )
 
     def end(self, name):
+        """
+        Return the end time of a slide.
+
+        :param name: the slide name
+        :returns: the slide end time
+        """
+
         return datetime.datetime.fromtimestamp(
             self.r.zscore(self.rk["end"], name)
         )
