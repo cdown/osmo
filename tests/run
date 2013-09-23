@@ -3,7 +3,6 @@
 service_wait_time=2
 redis_port=28692
 
-# This is pretty naive... but it should work for our case.
 if [[ $0 == /* ]]; then
     location="${0%/*}/.."
 else

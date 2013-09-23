@@ -8,6 +8,22 @@ client to display them with.
 The client can run anywhere there is a web browser that supports SSE -- it
 doesn't require any installation.
 
+Running
+-------
+
+For now, take a look at
+`tests/run
+<https://github.com/cdown/osmo/blob/master/tests/run>`__, but in
+essence:
+
+- Run the publisher (publisher.py)
+- Run the admin interface (admin.py, optional, for adding slides)
+- Run the SSE application (client.py)
+- Point your browser at wherever you're serving the client.
+
+You'll want to use gunicorn or another multithreaded server if you plan on
+having more than one client.
+
 Testing
 _______
 
