@@ -84,14 +84,14 @@ class TestDatabase(object):
         item_in = items["active"]
         duration_in = item_in["duration"]
         assert all(d.add(**item_in)), "Unable to add item"
-        duration_out = d.duration(item_in["name"])
+        duration_out = d.info(item_in["name"])["duration"]
         assert duration_in == duration_out, """Put in duration "%d", but got "%d" instead""" % (duration_in, duration_out)
 
     def test_rank(self):
         item_in = items["active"]
         rank_in = item_in["rank"]
         assert all(d.add(**item_in)), "Unable to add item"
-        rank_out = d.rank(item_in["name"])
+        rank_out = d.info(item_in["name"])["rank"]
         assert rank_in == rank_out, """Put in rank "%d", but got "%d" instead""" % (rank_in, rank_out)
 
     def test_rem(self):

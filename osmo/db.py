@@ -94,13 +94,9 @@ class Database(object):
 
         names = self.r.zrangebyscore(self.rk["start"], "-inf", "+inf")
         for name in names:
-            yield {
-                "name": name,
-                "duration": int(self.duration(name)),
-                "start": self.start(name),
-                "end": self.end(name),
-                "rank": int(self.rank(name)),
-            }
+            info = self.info(name)
+            info.update({ "name": name })
+            yield info
 
     def get_state(self, state="active"):
         """
@@ -127,52 +123,35 @@ class Database(object):
         else:
             raise NotImplementedError("Unknown state: %s" % state)
 
-        durations = [(name, self.duration(name)) for name in items]
+        info = {}
+
+        for name in items:
+            info[name] = self.info(name)
+
+        durations = [(name, info[name]["duration"]) for name in items]
         return sorted(
             durations,
-            key=lambda duration: self.rank(duration[0]),
+            key=lambda duration: info[duration[0]]["rank"],
         )
 
-    def rank(self, name):
+    def info(self, name):
         """
-        Return the rank of a slide.
+        Return information about a slide.
 
         :param name: the slide name
-        :returns: the slide rank
+        :returns: information about the slide
         """
 
-        return self.r.zscore(self.rk["rank"], name)
+        p = self.r.pipeline()
+        p.zscore(self.rk["rank"], name)
+        p.zscore(self.rk["duration"], name)
+        p.zscore(self.rk["start"], name)
+        p.zscore(self.rk["end"], name)
+        rank, duration, start, end = p.execute()
 
-    def duration(self, name):
-        """
-        Return the duration of a slide.
-
-        :param name: the slide name
-        :returns: the slide duration
-        """
-
-        return self.r.zscore(self.rk["duration"], name)
-
-    def start(self, name):
-        """
-        Return the start time of a slide.
-
-        :param name: the slide name
-        :returns: the slide start time
-        """
-
-        return datetime.datetime.fromtimestamp(
-            self.r.zscore(self.rk["start"], name)
-        )
-
-    def end(self, name):
-        """
-        Return the end time of a slide.
-
-        :param name: the slide name
-        :returns: the slide end time
-        """
-
-        return datetime.datetime.fromtimestamp(
-            self.r.zscore(self.rk["end"], name)
-        )
+        return {
+            "rank": rank,
+            "duration": duration,
+            "start": start,
+            "end": end,
+        }
