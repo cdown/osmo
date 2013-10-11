@@ -102,19 +102,19 @@ class Database(object):
             p.zrangebyscore(self.rk["start"], "-inf", now)
             p.zrangebyscore(self.rk["end"], now, "+inf")
             started, not_ended = map(set, p.execute())
-            items = started & not_ended
+            slides = started & not_ended
         elif state == "future":
-            items = self.r.zrangebyscore(self.rk["start"], now + 1, "+inf")
+            slides = self.r.zrangebyscore(self.rk["start"], now + 1, "+inf")
         elif state == "past":
-            items = self.r.zrangebyscore(self.rk["end"], "-inf", now - 1)
+            slides = self.r.zrangebyscore(self.rk["end"], "-inf", now - 1)
         elif state == "all":
-            items = self.r.zrangebyscore(self.rk["start"], "-inf", "+inf")
+            slides = self.r.zrangebyscore(self.rk["start"], "-inf", "+inf")
         else:
             raise NotImplementedError("Unknown state: %s" % state)
 
         info = []
 
-        for name in items:
+        for name in slides:
             info.append((name, self.info(name)))
 
         return sorted(

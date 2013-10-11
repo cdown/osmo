@@ -21,7 +21,7 @@ d = db.Database(test=test)
 while True:
     active = d.slides_in_state("active")
     if not active:
-        print("No active items, sleeping for 5 seconds")
+        print("No active slides, sleeping for 5 seconds")
         r.publish("osmo", "__empty__")
         time.sleep(5)
         continue

@@ -54,8 +54,8 @@ def list_all():
 
     return flask.render_template(
         "admin/index.html",
-        items=d.slides_in_state("all"),
-        active_items=d.slides_in_state("active"),
+        slides=d.slides_in_state("all"),
+        active_slides=d.slides_in_state("active"),
         error=flask.request.args.get("error", 0),
     )
 
@@ -75,10 +75,10 @@ def rem(slide_name):
         if e.errno != errno.ENOENT:
             raise e
         else:
-            flask.flash("""Item "%s" does not exist!""" % name)
+            flask.flash("""Slide "%s" does not exist!""" % name)
             return flask.redirect(flask.url_for("list_all") + "?error=1")
     d.rem(name)
-    flask.flash("""Okay, deleted item "%s".""" % name)
+    flask.flash("""Okay, deleted slide "%s".""" % name)
     return flask.redirect(flask.url_for("list_all"))
 
 
@@ -102,7 +102,7 @@ def add():
 
         u_file.save(os.path.join(media_dir, name))
         d.add(name, start, end, duration, rank)
-        flask.flash("""Okay, created item "%s".""" % name)
+        flask.flash("""Okay, created slide "%s".""" % name)
         return flask.redirect(flask.url_for("list_all"))
     return flask.render_template(
         "admin/add.html",

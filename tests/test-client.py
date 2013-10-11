@@ -13,7 +13,7 @@ except ImportError:
 
 d = osmo.db.Database(test=True)
 now = time.time()
-items = {
+slides = {
     "active1":{
         "name": "active1",
         "start": now - 1,
@@ -45,8 +45,8 @@ items = {
 }
 
 def _add_all():
-    for period in items.keys():
-        assert all(d.add(**items[period])), "Unable to add item: %s" % period
+    for period in slides.keys():
+        assert all(d.add(**slides[period])), "Unable to add slide: %s" % period
 
 def _at_script_dir(path):
     return os.path.join(os.path.dirname(__file__), path)
@@ -68,7 +68,7 @@ class TestClient(object):
 
     def test_stream(stream):
         last_time = None
-        last_item = None
+        last_slide = None
         started = False
 
         stream = sseclient.SSEClient("http://localhost:8000/stream")
@@ -91,15 +91,15 @@ class TestClient(object):
             else:
                 assert message.data == "active1", "Expected active1, got %s" % message.data
 
-            if last_item:
+            if last_slide:
                 print(round(current_time - last_time))
-                print(items[last_item]["duration"])
+                print(slides[last_slide]["duration"])
                 print(current_time)
                 print(last_time)
-                assert round(current_time - last_time) == items[last_item]["duration"]
+                assert round(current_time - last_time) == slides[last_slide]["duration"]
 
             last_time = current_time
-            last_item = message.data
+            last_slide = message.data
 
             if i > 5:
                 break

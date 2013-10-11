@@ -34,18 +34,18 @@
         </tr>
       </thead>
       <tbody>
-      {% for name, item in active_items %}
+      {% for name, slide in active_slides %}
         <tr>
             <td>{{ name }}</td>
-            <td>{{ item.duration }}</td>
+            <td>{{ slide.duration }}</td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
     <hr>
-    <h2>All items</h2>
+    <h2>All slides</h2>
 <div class="btn-toolbar">
-    <button class="btn btn-primary" onclick="location.href='{{ url_for('add') }}'">New item</button>
+    <button class="btn btn-primary" onclick="location.href='{{ url_for('add') }}'">New slide</button>
 </div>
     <table class="table">
       <thead>
@@ -59,15 +59,15 @@
         </tr>
       </thead>
       <tbody>
-      {% for name, item in items %}
+      {% for name, slide in slides %}
         <tr>
-            <td>{{ item.rank }}</td>
+            <td>{{ slide.rank }}</td>
             <td>{{ name }}</td>
-            <td>{{ item.start }}</td>
-            <td>{{ item.end }}</td>
-            <td>{{ item.duration }}</td>
+            <td>{{ slide.start }}</td>
+            <td>{{ slide.end }}</td>
+            <td>{{ slide.duration }}</td>
           <td>
-              <a href="{{ url_for('rem', name=item.name) }}" role="button"><i class="icon-remove"></i></a>
+              <a href="{{ url_for('rem', name=slide.name) }}" role="button"><i class="icon-remove"></i></a>
           </td>
         </tr>
       {% endfor %}
