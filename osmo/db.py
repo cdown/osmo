@@ -87,7 +87,7 @@ class Database(object):
         p.zrem(self.rk["rank"],     name)
         return p.execute()
 
-    def get_state(self, state="active"):
+    def slides_in_state(self, state="active"):
         """
         Return information about all the slides in a state.
 

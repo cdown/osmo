@@ -49,28 +49,28 @@ class TestDatabase(object):
 
     def test_active(self):
         _add_all()
-        my_items = d.get_state(state="active")
+        my_items = d.slides_in_state("active")
         assert len(my_items) == 1, "Expected 1 active item, but got %d" % len(my_items)
         assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
         assert my_items[0][0] == "active", "Got an item which should not be considered active: %s" % my_items[0]
 
     def test_past(self):
         _add_all()
-        my_items = d.get_state(state="past")
+        my_items = d.slides_in_state("past")
         assert len(my_items) == 1, "Expected 1 past item, but got %d" % len(my_items)
         assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
         assert my_items[0][0] == "past", "Got an item which should not be considered past: %s" % my_items[0]
 
     def test_future(self):
         _add_all()
-        my_items = d.get_state(state="future")
+        my_items = d.slides_in_state("future")
         assert len(my_items) == 1, "Expected 1 future item, but got %d" % len(my_items)
         assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
         assert my_items[0][0] == "future", "Got an item which should not be considered future: %s" % my_items[0]
 
     def test_all(self):
         _add_all()
-        my_items = d.get_state(state="all")
+        my_items = d.slides_in_state("all")
         assert len(my_items) == 3, "Expected 3 items, but got %d" % len(my_items)
         assert len(my_items[0]) == 2, "Expected 2-tuple item, but got %d" % len(my_items[0])
 

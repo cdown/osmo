@@ -19,7 +19,7 @@ r = redis.Redis(port=6379 if not test else 28692)
 d = db.Database(test=test)
 
 while True:
-    active = d.get_state(state="active")
+    active = d.slides_in_state("active")
     if not active:
         print("No active items, sleeping for 5 seconds")
         r.publish("osmo", "__empty__")
