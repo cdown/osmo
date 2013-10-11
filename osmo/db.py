@@ -87,11 +87,12 @@ class Database(object):
         p.zrem(self.rk["rank"],     name)
         return p.execute()
 
-    def slides_in_state(self, state="active"):
+    def slides_in_state(self, state="active", sort_by_rank=True):
         """
         Return information about all the slides in a state.
 
         :param state: which state to return slides for
+        :param sort_by_rank: whether to sort the slides by rank
         :returns: the names of all slides in this state
         """
 
@@ -117,10 +118,10 @@ class Database(object):
         for name in slides:
             info.append((name, self.info(name)))
 
-        return sorted(
-            info,
-            key=lambda x: x[1]["rank"],
-        )
+        if sort_by_rank:
+            info.sort(key=lambda x: x[1]["rank"])
+
+        return info
 
     def info(self, name):
         """
