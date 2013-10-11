@@ -34,10 +34,10 @@
         </tr>
       </thead>
       <tbody>
-      {% for item in active_items %}
+      {% for name, item in active_items %}
         <tr>
-            <td>{{ item[0] }}</td>
-            <td>{{ item[1] }}</td>
+            <td>{{ name }}</td>
+            <td>{{ item.duration }}</td>
         </tr>
       {% endfor %}
       </tbody>
@@ -59,10 +59,10 @@
         </tr>
       </thead>
       <tbody>
-      {% for item in items %}
+      {% for name, item in items %}
         <tr>
             <td>{{ item.rank }}</td>
-            <td>{{ item.name }}</td>
+            <td>{{ name }}</td>
             <td>{{ item.start }}</td>
             <td>{{ item.end }}</td>
             <td>{{ item.duration }}</td>

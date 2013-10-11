@@ -87,20 +87,9 @@ class Database(object):
         p.zrem(self.rk["rank"],     name)
         return p.execute()
 
-    def get_all_metadata(self):
-        """
-        Return a generator with information about all slides.
-        """
-
-        names = self.r.zrangebyscore(self.rk["start"], "-inf", "+inf")
-        for name in names:
-            info = self.info(name)
-            info.update({ "name": name })
-            yield info
-
     def get_state(self, state="active"):
         """
-        Return the names of all slides in a state.
+        Return information about all the slides in a state.
 
         :param state: which state to return slides for
         :returns: the names of all slides in this state
@@ -123,15 +112,14 @@ class Database(object):
         else:
             raise NotImplementedError("Unknown state: %s" % state)
 
-        info = {}
+        info = []
 
         for name in items:
-            info[name] = self.info(name)
+            info.append((name, self.info(name)))
 
-        durations = [(name, info[name]["duration"]) for name in items]
         return sorted(
-            durations,
-            key=lambda duration: info[duration[0]]["rank"],
+            info,
+            key=lambda x: x[1]["rank"],
         )
 
     def info(self, name):

@@ -26,7 +26,7 @@ while True:
         time.sleep(5)
         continue
 
-    for name, duration in active:
-        print("Publishing %s, sleeping for %d seconds" % (name, duration))
+    for name, slide in active:
+        print("Publishing %s, waiting %d seconds" % (name, slide["duration"]))
         r.publish("osmo", name)
-        time.sleep(duration)
+        time.sleep(slide["duration"])
