@@ -54,7 +54,7 @@ def list_all():
 
     return flask.render_template(
         "admin/index.html",
-        slides=d.slides_in_state("all"),
+        slides=d.slides_in_state("all", sort="start"),
         active_slides=d.slides_in_state("active"),
         error=flask.request.args.get("error", 0),
     )
