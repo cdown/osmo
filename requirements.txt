@@ -1,4 +1,5 @@
 argparse
+docopt
 flask
 nose
 redis
