@@ -38,7 +38,7 @@ class Database(object):
         :param end: when the slide should leave the queue
         :param duration: the duration to display the slide in one queue loop
         :param rank: the rank/priority of display
-        :return: a list, where all elements will evaluate to True if each
+        :returns: a list, where all elements will evaluate to True if each
                  call executed correctly
         """
 
@@ -54,7 +54,7 @@ class Database(object):
         Return the metadata for a slide.
 
         :param name: the slide name
-        :return: a dict containing slide information
+        :returns: a dict containing slide information
         """
 
         p = self.r.pipeline()
@@ -76,7 +76,7 @@ class Database(object):
         Remove a slide.
 
         :param name: the slide name
-        :return: a list, where all elements will evaluate to True if each
+        :returns: a list, where all elements will evaluate to True if each
                  call executed correctly
         """
 
