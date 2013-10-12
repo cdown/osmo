@@ -22,7 +22,7 @@ def event_stream():
     Continually yield the path to the next desired image.
 
     :returns: a path to the next desired image, in SSE format
-    :rtype: ``generator``
+    :rtype: generator
     """
 
     ps = r.pubsub()
