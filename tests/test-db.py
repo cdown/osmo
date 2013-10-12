@@ -96,7 +96,7 @@ class TestDatabase(object):
 
     def test_rem(self):
         assert all(d.add(**slides["active"])), "Unable to add slide"
-        assert all(d.rem(slides["active"]["name"])), "Unable to remove slide"
+        assert all(d.remove(slides["active"]["name"])), "Unable to remove slide"
 
     def test_rem_nonexistent(self):
-        assert not any(d.rem(slides["active"]["name"])), "Removed nonexistent slide"
+        assert not any(d.remove(slides["active"]["name"])), "Removed nonexistent slide"

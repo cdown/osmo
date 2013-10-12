@@ -77,7 +77,7 @@ def rem(slide_name):
         else:
             flask.flash("""Slide "%s" does not exist!""" % name)
             return flask.redirect(flask.url_for("list_all") + "?error=1")
-    d.rem(name)
+    d.remove(name)
     flask.flash("""Okay, deleted slide "%s".""" % name)
     return flask.redirect(flask.url_for("list_all"))
 

@@ -71,7 +71,7 @@ class Database(object):
             "rank": rank,
         }
 
-    def rem(self, name):
+    def remove(self, name):
         """
         Remove a slide.
 
