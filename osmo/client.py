@@ -19,7 +19,10 @@ media_dir = "/srv/osmo"
 
 def event_stream():
     """
-    Generate data to populate the client SSE stream.
+    Continually yield the path to the next desired image.
+
+    :returns: a path to the next desired image, in SSE format
+    :rtype: ``generator``
     """
 
     ps = r.pubsub()
@@ -36,7 +39,10 @@ def event_stream():
 @app.route("/stream", methods=["GET"])
 def stream():
     """
-    Provides the slide SSE stream.
+    The SSE stream, continually yielding paths to the next desired image.
+
+    :returns: an SSE stream of the next desired image
+    :rtype: :class:`flask.Response`
     """
 
     return flask.Response(
@@ -48,7 +54,10 @@ def stream():
 @app.route("/", methods=["GET"])
 def home():
     """
-    Provides the framework to display images based on the SSE stream.
+    The framework to display images based on the SSE stream.
+
+    :returns: a page that displays images from the SSE stream
+    :rtype: :class:`flask.Response`
     """
 
     return flask.render_template("client.html")
@@ -57,7 +66,11 @@ def home():
 @app.route("/media/<path:name>", methods=["GET"])
 def media(name):
     """
-    Get a file from the media directory.
+    Return a file from the media directory.
+
+    :param name: the file to return
+    :returns: a file from the media directory
+    :rtype: :class:`flask.Response`
     """
 
     return flask.send_from_directory(media_dir, name)

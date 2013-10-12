@@ -55,6 +55,7 @@ def list_all():
     List all slides.
 
     :returns: the admin interface index
+    :rtype: :class:`flask.Response`
     """
 
     return flask.render_template(
@@ -72,6 +73,7 @@ def rem(slide_name):
 
     :param slide_name: the slide name to remove
     :returns: a redirect to the admin interface index
+    :rtype: :class:`flask.Response`
     """
 
     name = werkzeug.utils.secure_filename(name)
@@ -95,6 +97,7 @@ def add():
 
     :returns: if a POST, a redirect to the admin interface index, if a GET, the
         interface to add a slide
+    :rtype: :class:`flask.Response`
     """
 
     if flask.request.method == "POST":
@@ -122,6 +125,7 @@ def static_js(filename):
     Return a file relative to the static Javascript directory.
 
     :returns: a file relative to the static directory
+    :rtype: :class:`flask.Response`
     """
 
     return flask.send_from_directory(_static_dir("js"), filename)
@@ -133,6 +137,7 @@ def static_css(filename):
     Return a path to a file relative to the static CSS directory.
 
     :returns: a file relative to the static directory
+    :rtype: :class:`flask.Response`
     """
 
     return flask.send_from_directory(_static_dir("css"), filename)
@@ -144,6 +149,7 @@ def static_img(filename):
     Return a path to a file relative to the static image directory.
 
     :returns: a file relative to the static directory
+    :rtype: :class:`flask.Response`
     """
 
     return flask.send_from_directory(_static_dir("img"), filename)
