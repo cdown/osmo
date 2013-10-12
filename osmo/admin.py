@@ -1,11 +1,18 @@
 #!/usr/bin/env python
 
 """
-Admin interface.
+Admin interface to osmo.
+
+Usage: admin.py [options]
+
+Options:
+  --media-dir DIR  The directory to get media files from. [default: /srv/osmo]
+  --port PORT      The port to run on. [default: 8001]
+  --no-debug       Disable Flask debugging.
 """
 
+from docopt import docopt
 import argparse
-import calendar
 import db
 import errno
 import flask
@@ -156,16 +163,7 @@ def static_img(filename):
 
 
 if __name__ == "__main__":
-    import argparse
+    args = docopt(__doc__)
 
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "mediadir",
-        nargs="?",
-        default="/srv/osmo",
-        help="The directory to serve media files from"
-    )
-    args = parser.parse_args()
-
-    media_dir = args.mediadir
-    app.run(port=8001, debug=True)
+    media_dir = args["--media-dir"]
+    app.run(port=int(args["--port"]), debug=not args["--no-debug"])
