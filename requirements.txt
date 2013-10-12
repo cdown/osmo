@@ -1,7 +1,4 @@
 argparse
 docopt
 flask
-nose
 redis
-sseclient
-sphinx
