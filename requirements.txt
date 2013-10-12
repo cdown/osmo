@@ -4,3 +4,4 @@ flask
 nose
 redis
 sseclient
+sphinx
