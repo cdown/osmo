@@ -14,7 +14,7 @@ class Database(object):
         """
         Initialise the Redis backend, and populate the key names.
 
-        :param test: whether to use the test database or not
+        :param test: whether to connect to the testing Redis instance or not
         """
 
         self.r = redis.Redis(
@@ -38,8 +38,8 @@ class Database(object):
         :param end: when the slide should leave the queue
         :param duration: the duration to display the slide in one queue loop
         :param rank: the rank/priority of display
-        :returns: a list, where all elements will evaluate to True if each
-                 call executed correctly
+        :returns: the success of each Redis pipeline call
+        :rtype: a list of bools
         """
 
         p = self.r.pipeline()
@@ -54,7 +54,8 @@ class Database(object):
         Return the metadata for a slide.
 
         :param name: the slide name
-        :returns: a dict containing slide information
+        :returns: slide attributes
+        :rtype: dict
         """
 
         p = self.r.pipeline()
@@ -76,8 +77,8 @@ class Database(object):
         Remove a slide.
 
         :param name: the slide name
-        :returns: a list, where all elements will evaluate to True if each
-                 call executed correctly
+        :returns: the success of each Redis pipeline call
+        :rtype: a list of bools
         """
 
         p = self.r.pipeline()
@@ -92,8 +93,10 @@ class Database(object):
         Return information about all the slides in a state.
 
         :param state: which state to return slides for
-        :param sort: the info key to sort the slides by. If None, do not sort.
-        :returns: the names of all slides in this state
+        :param sort: the info key to sort the slides by
+        :type sort: str or None
+        :returns: attributes of all slides in this state, sorted by `sort`
+        :rtype: a list of tuples
         """
 
         now = time.time()
@@ -129,6 +132,7 @@ class Database(object):
 
         :param name: the slide name
         :returns: information about the slide
+        :rtype: dict
         """
 
         p = self.r.pipeline()
