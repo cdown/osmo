@@ -1,3 +1,0 @@
-nose
-sseclient
-sphinx
