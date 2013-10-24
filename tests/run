@@ -12,6 +12,10 @@ fi
 
 export CONFIG_FILE="$location/config/dev.json"
 
+rm -rf /tmp/osmo-dev/media
+mkdir -p /tmp/osmo-dev
+cp -a "$location/tests/media" /tmp/osmo-dev/media
+
 redis-server - >/dev/null << EOF &
 daemonize no
 port $redis_port

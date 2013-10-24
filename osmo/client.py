@@ -6,6 +6,7 @@ Client interface to osmo.
 Usage: client.py <media-dir>
 """
 
+from config import config
 from docopt import docopt
 import sys
 import flask
@@ -13,11 +14,7 @@ import redis
 
 
 app = flask.Flask(__name__)
-r = redis.Redis()
-
-# This is only eventually used when we are not being run in the Flask debugger.
-media_dir = "/srv/osmo"
-
+r = redis.Redis(port=config["redis"]["port"])
 
 def event_stream():
     """
@@ -75,12 +72,8 @@ def media(name):
     :rtype: :class:`flask.Response`
     """
 
-    return flask.send_from_directory(media_dir, name)
+    return flask.send_from_directory(config["paths"]["media_dir"], name)
 
 
 if __name__ == "__main__":
-    r = redis.Redis(port=28692)
-    args = docopt(__doc__)
-    media_dir = args["<media-dir>"]
-
-    app.run(port=8000, debug=True)
+    app.run(port=config["client"]["port"])
