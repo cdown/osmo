@@ -12,7 +12,6 @@ Options:
 """
 
 from docopt import docopt
-import argparse
 import db
 import errno
 import flask
