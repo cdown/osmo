@@ -1,0 +1,14 @@
+{
+    "paths": {
+        "media_dir": "/tmp/osmo-dev/media"
+    },
+    "redis": {
+        "port": 28692
+    },
+    "client": {
+        "port": 8000
+    },
+    "admin": {
+        "port": 8001
+    }
+}
