@@ -7,18 +7,20 @@ Database functions.
 import datetime
 import redis
 import time
+try:
+    from .config import config
+except SystemError:  # Not being used in larger osmo context
+    from config import config
 
 
 class Database(object):
-    def __init__(self, test=False):
+    def __init__(self):
         """
         Initialise the Redis backend, and populate the key names.
-
-        :param test: whether to connect to the testing Redis instance or not
         """
 
         self.r = redis.Redis(
-            port=6379 if not test else 28692,
+            port=config["redis"]["port"],
             decode_responses=True,
         )
         self.keyspace = "osmo"

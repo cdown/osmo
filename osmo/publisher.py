@@ -1,18 +1,6 @@
 #!/usr/bin/env python
 
-"""
-Publish the currently active slides to Redis.
-
-Usage: publisher.py [options]
-
-Options:
-  --help           This help text.
-  --test           Use the test Redis database.
-  --port PORT      The port to use. [default: 6379]
-  --sleep SECONDS  The sleep time when there are no active slides. [default: 5]
-"""
-
-from docopt import docopt
+from config import config
 import db
 import redis
 import sys
@@ -20,10 +8,8 @@ import time
 
 
 if __name__ == "__main__":
-    args = docopt(__doc__)
-
-    r = redis.Redis(port=int(args["--port"]))
-    d = db.Database(test=args["--test"])
+    r = redis.Redis(port=config["redis"]["port"])
+    d = db.Database()
 
     while True:
         active = d.slides_in_state("active")
@@ -34,6 +20,7 @@ if __name__ == "__main__":
                 r.publish("osmo", name)
                 time.sleep(slide["duration"])
         else:
-            print("No active slides, sleeping %s seconds" % args["--sleep"])
+            sleep_time = config["publisher"]["empty_sleep"]
+            print("No active slides, sleeping %d seconds" % sleep_time)
             r.publish("osmo", "__empty__")
-            time.sleep(int(args["--sleep"]))
+            time.sleep(sleep_time)

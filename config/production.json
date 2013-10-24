@@ -8,6 +8,9 @@
     "client": {
         "port": null
     },
+    "publisher": {
+        "empty_sleep": 5
+    },
     "admin": {
         "port": null
     }

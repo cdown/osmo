@@ -11,7 +11,7 @@ except ImportError:
     from urllib.request import urlopen
 
 
-d = osmo.db.Database(test=True)
+d = osmo.db.Database()
 now = time.time()
 slides = {
     "active1":{
