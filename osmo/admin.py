@@ -11,7 +11,6 @@ Options:
   --no-debug       Disable Flask debugging.
 """
 
-from docopt import docopt
 import db
 import errno
 import flask

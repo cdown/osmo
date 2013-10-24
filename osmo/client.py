@@ -7,7 +7,6 @@ Usage: client.py <media-dir>
 """
 
 from config import config
-from docopt import docopt
 import sys
 import flask
 import redis
