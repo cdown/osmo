@@ -10,6 +10,8 @@ else
     location="${location%/*}/.."
 fi
 
+export CONFIG_FILE="$location/config/dev.json"
+
 redis-server - >/dev/null << EOF &
 daemonize no
 port $redis_port

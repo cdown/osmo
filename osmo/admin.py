@@ -19,15 +19,12 @@ import os
 import sys
 import time
 import werkzeug.utils
+from config import config
 
 
 app = flask.Flask(__name__)
 app.secret_key = os.urandom(32)
 d = db.Database()
-
-# This is only eventually used when we are not being run in the Flask debugger.
-media_dir = "/srv/osmo"
-
 
 def _static_dir(path):
     """
@@ -162,7 +159,4 @@ def static_img(filename):
 
 
 if __name__ == "__main__":
-    args = docopt(__doc__)
-
-    media_dir = args["--media-dir"]
-    app.run(port=int(args["--port"]), debug=not args["--no-debug"])
+    app.run(port=config["admin"]["port"])
