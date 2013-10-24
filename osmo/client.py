@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
 """
-Client interface.
+Client interface to osmo.
+
+Usage: client.py <media-dir>
 """
 
+from docopt import docopt
 import sys
 import flask
 import redis
-import argparse
 
 
 app = flask.Flask(__name__)
@@ -77,18 +79,8 @@ def media(name):
 
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "mediadir",
-        nargs="?",
-        default="/srv/osmo",
-        help="The directory to serve media files from"
-    )
-    args = parser.parse_args()
-
     r = redis.Redis(port=28692)
-    media_dir = args.mediadir
+    args = docopt(__doc__)
+    media_dir = args["<media-dir>"]
 
     app.run(port=8000, debug=True)
