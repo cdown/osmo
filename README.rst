@@ -24,6 +24,19 @@ essence:
 You'll want to use gunicorn or another multithreaded server if you plan on
 having more than one client.
 
+Redis
+-----
+
+Since all critical multi-stage operations are done in a pipeline, it's pretty
+hard to make the database become inconsistent, so you shouldn't worry too much
+about that.
+
+The only real thing to worry about is that Redis data is flushed to disk often
+enough to not worry about it. My recommendations would to use an AOF redo log,
+and persist to disk every few minutes (and configure it to snapshot every now
+and then in case someone clears the DB because they have a vendetta against
+your slides).
+
 Testing
 _______
 
