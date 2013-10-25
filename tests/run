@@ -28,8 +28,10 @@ daemonize no
 port $redis_port
 EOF
 
-api_pid="$( "$location"/osmo/client.py > "$location/tests/api.log" 2>&1 & echo "$!" )"
-publisher_pid="$( "$location"/osmo/publisher.py > "$location/tests/publisher.log" 2>&1 & echo "$!" )"
+mkdir -p "$location/tests/log"
+
+api_pid="$( "$location"/osmo/client.py > "$location/tests/log/api" 2>&1 & echo "$!" )"
+publisher_pid="$( "$location"/osmo/publisher.py > "$location/tests/log/publisher" 2>&1 & echo "$!" )"
 
 trap 'kill "$api_pid" ; kill "$publisher_pid" ; redis-cli -p "$redis_port" shutdown' 0
 

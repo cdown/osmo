@@ -9,5 +9,5 @@ install:
 script:
     - "tests/run"
 after_failure:
-    - "cat tests/api.log"
-    - "cat tests/publisher.log"
+    - "cat tests/log/api"
+    - "cat tests/log/publisher"
