@@ -2,8 +2,6 @@
 
 """
 Client interface to osmo.
-
-Usage: client.py <media-dir>
 """
 
 from config import config

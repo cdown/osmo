@@ -2,13 +2,6 @@
 
 """
 Admin interface to osmo.
-
-Usage: admin.py [options]
-
-Options:
-  --media-dir DIR  The directory to get media files from. [default: /srv/osmo]
-  --port PORT      The port to run on. [default: 8001]
-  --no-debug       Disable Flask debugging.
 """
 
 import db
