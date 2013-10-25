@@ -9,7 +9,9 @@ import redis
 import time
 try:
     from .config import config
-except SystemError:  # Not being used in larger osmo context
+except (SystemError, ValueError):
+    # Not being used in larger osmo context. this will by fixed by moving
+    # scripts out of the module soon.
     from config import config
 
 
