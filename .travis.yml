@@ -12,3 +12,4 @@ after_failure:
     - "cat tests/log/api"
     - "cat tests/log/publisher"
     - "cat tests/log/redis"
+    - "cat tests/log/monitor"

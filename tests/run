@@ -32,8 +32,9 @@ EOF
 
 api_pid="$( "$location"/osmo/client.py > "$location/tests/log/api" 2>&1 & echo "$!" )"
 publisher_pid="$( "$location"/osmo/publisher.py > "$location/tests/log/publisher" 2>&1 & echo "$!" )"
+monitor_pid="$( redis-cli -p "$redis_port" monitor > "$location/tests/log/monitor" 2>&1 & echo "$!" )"
 
-trap 'kill "$api_pid" ; kill "$publisher_pid" ; redis-cli -p "$redis_port" shutdown' 0
+trap 'kill "$api_pid" "$publisher_pid" "$monitor_pid"; redis-cli -p "$redis_port" shutdown' 0
 
 printf 'Waiting %d seconds for services to finish starting...\n\n' "$service_wait_time"
 sleep "$service_wait_time"
