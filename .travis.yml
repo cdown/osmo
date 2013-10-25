@@ -8,3 +8,6 @@ install:
     - "pip install -r requirements-dev.txt --use-mirrors"
 script:
     - "tests/run"
+after_failure:
+    - "cat tests/api.log"
+    - "cat tests/publisher.log"
