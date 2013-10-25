@@ -23,12 +23,12 @@ rm -rf "$media_dir"
 mkdir -p "$media_dir"
 cp -aT "$location/tests/media" "$media_dir"
 
-redis-server - >/dev/null << EOF &
+mkdir -p "$location/tests/log"
+
+redis-server - > "$location/tests/log/redis" 2>&1 << EOF &
 daemonize no
 port $redis_port
 EOF
-
-mkdir -p "$location/tests/log"
 
 api_pid="$( "$location"/osmo/client.py > "$location/tests/log/api" 2>&1 & echo "$!" )"
 publisher_pid="$( "$location"/osmo/publisher.py > "$location/tests/log/publisher" 2>&1 & echo "$!" )"
