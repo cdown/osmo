@@ -1,7 +1,11 @@
 #!/bin/bash
 
 service_wait_time=2
-redis_port=28692
+
+get_config_option() {
+    "$location"/tests/get_config_option.py "$@"
+}
+
 
 if [[ $0 == /* ]]; then
     location="${0%/*}/.."
@@ -12,17 +16,20 @@ fi
 
 export CONFIG_FILE="$location/config/dev.json"
 
-rm -rf /tmp/osmo-dev/media
-mkdir -p /tmp/osmo-dev
-cp -a "$location/tests/media" /tmp/osmo-dev/media
+redis_port=$(get_config_option redis port)
+media_dir=$(get_config_option paths media_dir)
+
+rm -rf "$media_dir"
+mkdir -p "$media_dir"
+cp -aT "$location/tests/media" "$media_dir"
 
 redis-server - >/dev/null << EOF &
 daemonize no
 port $redis_port
 EOF
 
-api_pid="$( "$location"/osmo/client.py "$location/tests/media/" > "$location/tests/api.log" 2>&1 & echo "$!" )"
-publisher_pid="$( "$location"/osmo/publisher.py --test --port "$redis_port" > "$location/tests/publisher.log" 2>&1 & echo "$!" )"
+api_pid="$( "$location"/osmo/client.py > "$location/tests/api.log" 2>&1 & echo "$!" )"
+publisher_pid="$( "$location"/osmo/publisher.py > "$location/tests/publisher.log" 2>&1 & echo "$!" )"
 
 trap 'kill "$api_pid" ; kill "$publisher_pid" ; redis-cli -p "$redis_port" shutdown' 0
 
