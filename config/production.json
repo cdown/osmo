@@ -1,0 +1,17 @@
+{
+    "paths": {
+        "media_dir": "/srv/osmo"
+    },
+    "redis": {
+        "port": 6379
+    },
+    "client": {
+        "port": null
+    },
+    "publisher": {
+        "empty_sleep": 5
+    },
+    "admin": {
+        "port": null
+    }
+}

@@ -3,7 +3,7 @@
 import osmo.db
 import time
 
-d = osmo.db.Database(test=True)
+d = osmo.db.Database()
 now = time.time()
 slides = {
     "active":{

@@ -1,21 +1,17 @@
 #!/usr/bin/env python
 
 """
-Client interface.
+Client interface to osmo.
 """
 
+from config import config
 import sys
 import flask
 import redis
-import argparse
 
 
 app = flask.Flask(__name__)
-r = redis.Redis()
-
-# This is only eventually used when we are not being run in the Flask debugger.
-media_dir = "/srv/osmo"
-
+r = redis.Redis(port=config["redis"]["port"])
 
 def event_stream():
     """
@@ -73,22 +69,8 @@ def media(name):
     :rtype: :class:`flask.Response`
     """
 
-    return flask.send_from_directory(media_dir, name)
+    return flask.send_from_directory(config["paths"]["media_dir"], name)
 
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "mediadir",
-        nargs="?",
-        default="/srv/osmo",
-        help="The directory to serve media files from"
-    )
-    args = parser.parse_args()
-
-    r = redis.Redis(port=28692)
-    media_dir = args.mediadir
-
-    app.run(port=8000, debug=True)
+    app.run(port=config["client"]["port"])
