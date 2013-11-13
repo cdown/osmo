@@ -1,2 +1,2 @@
 nose
-sseclient==0.0.6
+sseclient!=0.0.7
