@@ -5,7 +5,6 @@ Client interface to osmo.
 """
 
 from config import config
-import sys
 import flask
 import redis
 
