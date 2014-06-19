@@ -6,12 +6,15 @@
         "port": 6379
     },
     "client": {
-        "port": null
+        "port": null,
+        "debug": false
     },
     "publisher": {
         "empty_sleep": 5
     },
     "admin": {
-        "port": null
+        "port": null,
+        "debug": false
+
     }
 }

@@ -72,7 +72,7 @@ def rem(slide_name):
 
     name = werkzeug.utils.secure_filename(slide_name)
     try:
-        os.remove(os.path.join(media_dir, name))
+        os.remove(os.path.join(config["paths"]["media_dir"], name))
     except OSError as e:
         if e.errno != errno.ENOENT:
             raise e
@@ -106,7 +106,7 @@ def add():
         if not u_file:
             flask.abort(400)
 
-        u_file.save(os.path.join(media_dir, name))
+        u_file.save(os.path.join(config["paths"]["media_dir"], name))
         d.add(name, start, end, duration, rank)
         flask.flash("""Okay, created slide "%s".""" % name)
         return flask.redirect(flask.url_for("list_all"))
@@ -150,4 +150,4 @@ def static_img(filename):
 
 
 if __name__ == "__main__":
-    app.run(port=config["admin"]["port"])
+    app.run(port=config["admin"]["port"],debug=config["admin"]["debug"])
