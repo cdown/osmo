@@ -4,7 +4,6 @@
 Database functions.
 """
 
-import datetime
 import redis
 import time
 try:
