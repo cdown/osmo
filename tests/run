@@ -1,6 +1,6 @@
 #!/bin/bash
 
-service_wait_time=2
+service_wait_time=10
 
 get_config_option() {
     "$location"/tests/get_config_option.py "$@"
