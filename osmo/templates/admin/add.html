@@ -12,7 +12,22 @@
   </head>
   <body>
       <div class="span12 center top-offset">
-<div class="row">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                <div class="alert alert-{{ category }}">
+                {% else %}
+                <div class="alert alert-{{ category }}">
+                {% endif %}
+                    {{ message }}
+                </div>
+            {% endfor %}
+        <hr>
+        {% endif %}
+    {% endwith %}
+
+  <div class="row">
     <div class="span8">
         <form action="" method=post enctype=multipart/form-data class="form-horizontal">
             <div class="control-group">
