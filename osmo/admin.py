@@ -71,7 +71,7 @@ def rem(slide_name):
     :rtype: :class:`flask.Response`
     """
 
-    name = werkzeug.utils.secure_filename(name)
+    name = werkzeug.utils.secure_filename(slide_name)
     try:
         os.remove(os.path.join(media_dir, name))
     except OSError as e:
