@@ -3,7 +3,6 @@
 from config import config
 import db
 import redis
-import sys
 import time
 
 

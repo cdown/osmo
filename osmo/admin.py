@@ -8,7 +8,6 @@ import db
 import errno
 import flask
 import os
-import sys
 import time
 import werkzeug.utils
 from config import config
@@ -105,7 +104,7 @@ def add():
         rank = int(flask.request.form["rank"])
 
         if not u_file:
-            abort(400)
+            flask.abort(400)
 
         u_file.save(os.path.join(media_dir, name))
         d.add(name, start, end, duration, rank)
