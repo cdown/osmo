@@ -151,4 +151,4 @@ def static_img(filename):
 
 
 if __name__ == "__main__":
-    app.run(port=config["admin"]["port"])
+    app.run(port=config["admin"]["port"],debug=config["admin"]["debug"])
