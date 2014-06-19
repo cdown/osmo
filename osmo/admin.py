@@ -8,7 +8,6 @@ import db
 import errno
 import flask
 import os
-import sys
 import time
 import werkzeug.utils
 from config import config
