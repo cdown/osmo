@@ -63,8 +63,8 @@
         <tr>
             <td>{{ slide.rank }}</td>
             <td>{{ name }}</td>
-            <td>{{ slide.start }}</td>
-            <td>{{ slide.end }}</td>
+            <td>{{ slide.human_start }}</td>
+            <td>{{ slide.human_end }}</td>
             <td>{{ slide.duration }}</td>
           <td>
               <a href="{{ url_for('rem', slide_name=name) }}" role="button" onclick="return confirm('Are you sure you want to remove this slide?')"><i class="icon-remove"></i></a>
