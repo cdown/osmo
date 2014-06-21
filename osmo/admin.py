@@ -108,16 +108,20 @@ def add():
         duration = flask.request.form["duration"]
         rank = flask.request.form["rank"]
 
-        errors = None
+        errors = False
 
         if not u_file or not start or not end or not duration or not rank:
-            errors = "Please enter all the fields."
+            errors = True
+            flask.flash("Please enter all the fields.")
 
         if not _allowed_file(name):
-            errors = "Only these filename extensions are allowed: " + ' '.join(config["admin"]["valid_extensions"])
+            errors = True
+            allowed_ext = ', '.join(config["admin"]["valid_extensions"])
+            flask.flash(
+                "Only these filename extensions are allowed: " + allowed_ext
+            )
 
-        if errors is not None:
-            flask.flash(errors,'error')
+        if errors:
             return flask.render_template("admin/add.html")
 
         start = _dtpicker_strptime(start)
