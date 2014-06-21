@@ -6,13 +6,14 @@ get_config_option() {
     "$location"/tests/get_config_option.py "$@"
 }
 
-
 if [[ $0 == /* ]]; then
     location="${0%/*}/.."
 else
     location="$PWD/${0#./}"
     location="${location%/*}/.."
 fi
+
+export PYTHONPATH=$PYTHONPATH:$location/osmo
 
 export CONFIG_FILE="$location/config/dev.json"
 
