@@ -43,6 +43,8 @@ _______
 .. image:: https://travis-ci.org/cdown/osmo.png?branch=master
     :target: https://travis-ci.org/cdown/osmo
 
+Redis must be installed.
+
 ::
 
     $ pip install -r requirements.txt
