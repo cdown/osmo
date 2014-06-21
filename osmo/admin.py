@@ -103,7 +103,7 @@ def add():
     if flask.request.method == "POST":
         u_file = flask.request.files["file"]
 
-        name = werkzeug.utils.secure_filename(u_file.filename).lower()
+        name = werkzeug.utils.secure_filename(u_file.filename)
 
         start = flask.request.form["start"]
         end = flask.request.form["end"]
