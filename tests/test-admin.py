@@ -16,3 +16,9 @@ def test_allowed_file_good():
         osmo.admin._allowed_file("foo.%s" % ext)
         for ext in config["admin"]["valid_extensions"]
     )
+
+def test_allowed_file_case():
+    assert all(
+        osmo.admin._allowed_file("foo.%s" % ext.title())
+        for ext in config["admin"]["valid_extensions"]
+    )

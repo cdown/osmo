@@ -44,7 +44,7 @@ def _dtpicker_strptime(dtpicker_time):
 
 def _allowed_file(filename):
     return any(
-        filename.endswith("." + x)
+        filename.lower().endswith("." + x.lower())
         for x in config["admin"]["valid_extensions"]
     )
 
