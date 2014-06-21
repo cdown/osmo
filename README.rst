@@ -46,15 +46,8 @@ _______
 ::
 
     $ pip install -r requirements.txt
-    [...]
-    $ pip install -r requirements-dev.txt
-    [...]
+    $ pip install -r tests/requirements.txt
     $ tests/run
-    .............
-    ----------------------------------------------------------------------
-    Ran 13 tests in 11.926s
-
-    OK
 
 License
 -------
