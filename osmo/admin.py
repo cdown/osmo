@@ -43,8 +43,10 @@ def _dtpicker_strptime(dtpicker_time):
     return time.mktime(time_struct)
 
 def _allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in config["admin"]["valid_extensions"]
+    return any(
+        filename.endswith("." + x)
+        for x in config["admin"]["valid_extensions"]
+    )
 
 
 @app.route("/", methods=["GET"])
