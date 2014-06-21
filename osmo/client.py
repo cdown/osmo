@@ -72,4 +72,4 @@ def media(name):
 
 
 if __name__ == "__main__":
-    app.run(port=config["client"]["port"])
+    app.run(port=config["client"]["port"],debug=config["client"]["debug"])

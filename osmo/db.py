@@ -150,4 +150,6 @@ class Database(object):
             "duration": duration,
             "start": start,
             "end": end,
+            "human_start": time.strftime("%Y-%m-%d %H:%M",time.localtime(start)),
+            "human_end": time.strftime("%Y-%m-%d %H:%M",time.localtime(end)),
         }

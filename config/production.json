@@ -14,6 +14,7 @@
     },
     "admin": {
         "port": null,
+        "valid_extensions": ["png","jpg","jpeg","gif"],
         "debug": false
 
     }

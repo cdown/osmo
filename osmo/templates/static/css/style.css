@@ -16,3 +16,11 @@ p.blurb {
 .top-offset {
     margin-top: 3em;
 }
+
+/* Bootstrap inserts a background image into classes named icon-*
+   so let's avoid that. */
+.icon-home {
+  background-image: none;
+}
+
+

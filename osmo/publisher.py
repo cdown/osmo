@@ -2,6 +2,7 @@
 
 from config import config
 import db
+import sys
 import redis
 import time
 
@@ -15,11 +16,13 @@ if __name__ == "__main__":
 
         if active:
             for name, slide in active:
-                print("Published %s, %d seconds" % (name, slide["duration"]))
+                print("Published %s, %d seconds\n" % (name, slide["duration"]))
+                sys.stdout.flush()
                 r.publish("osmo", name)
                 time.sleep(slide["duration"])
         else:
             sleep_time = config["publisher"]["empty_sleep"]
-            print("No active slides, sleeping %d seconds" % sleep_time)
+            print("No active slides, sleeping %d seconds\n" % sleep_time)
+            sys.stdout.flush()
             r.publish("osmo", "__empty__")
             time.sleep(sleep_time)

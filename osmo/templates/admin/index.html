@@ -11,13 +11,13 @@
   <body>
       <div class="span12 center top-offset">
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for message in messages %}
-                {% if error %}
-                <div class="alert alert-error">
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                <div class="alert alert-{{ category }}">
                 {% else %}
-                <div class="alert alert-success">
+                <div class="alert alert-{{ category }}">
                 {% endif %}
                     {{ message }}
                 </div>
@@ -63,11 +63,11 @@
         <tr>
             <td>{{ slide.rank }}</td>
             <td>{{ name }}</td>
-            <td>{{ slide.start }}</td>
-            <td>{{ slide.end }}</td>
+            <td>{{ slide.human_start }}</td>
+            <td>{{ slide.human_end }}</td>
             <td>{{ slide.duration }}</td>
           <td>
-              <a href="{{ url_for('rem', slide_name=name) }}" role="button"><i class="icon-remove"></i></a>
+              <a href="{{ url_for('rem', slide_name=name) }}" role="button" onclick="return confirm('Are you sure you want to remove this slide?')"><i class="icon-remove"></i></a>
           </td>
         </tr>
       {% endfor %}

@@ -42,6 +42,10 @@ def _dtpicker_strptime(dtpicker_time):
     time_struct = time.strptime(dtpicker_time, "%Y-%m-%d %H:%M")
     return time.mktime(time_struct)
 
+def _allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in config["admin"]["valid_extensions"]
+
 
 @app.route("/", methods=["GET"])
 def list_all():
@@ -97,18 +101,33 @@ def add():
     if flask.request.method == "POST":
         u_file = flask.request.files["file"]
 
-        name = werkzeug.utils.secure_filename(u_file.filename)
-        start = _dtpicker_strptime(flask.request.form["start"])
-        end = _dtpicker_strptime(flask.request.form["end"])
-        duration = int(flask.request.form["duration"])
-        rank = int(flask.request.form["rank"])
+        name = werkzeug.utils.secure_filename(u_file.filename).lower()
 
-        if not u_file:
-            flask.abort(400)
+        start = flask.request.form["start"]
+        end = flask.request.form["end"]
+        duration = flask.request.form["duration"]
+        rank = flask.request.form["rank"]
+
+        errors = False
+
+        if not u_file or not start or not end or not duration or not rank:
+            errors = "Please enter all the fields."
+
+        if not _allowed_file(name):
+            errors = "Only these filename extensions are allowed: " + ' '.join(config["admin"]["valid_extensions"])
+
+        if errors:
+            flask.flash(errors,'error')
+            return flask.render_template("admin/add.html")
+
+        start = _dtpicker_strptime(start)
+        end = _dtpicker_strptime(end)
+        duration = int(duration)
+        rank = int(rank)
 
         u_file.save(os.path.join(config["paths"]["media_dir"], name))
         d.add(name, start, end, duration, rank)
-        flask.flash("""Okay, created slide "%s".""" % name)
+        flask.flash("""Okay, created slide "%s".""" % name, 'success')
         return flask.redirect(flask.url_for("list_all"))
     return flask.render_template("admin/add.html")
 

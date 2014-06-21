@@ -12,7 +12,22 @@
   </head>
   <body>
       <div class="span12 center top-offset">
-<div class="row">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                <div class="alert alert-{{ category }}">
+                {% else %}
+                <div class="alert alert-{{ category }}">
+                {% endif %}
+                    {{ message }}
+                </div>
+            {% endfor %}
+        <hr>
+        {% endif %}
+    {% endwith %}
+
+  <div class="row">
     <div class="span8">
         <form action="" method=post enctype=multipart/form-data class="form-horizontal">
             <div class="control-group">
@@ -44,7 +59,7 @@
                 <label for="duration" class="control-label">
                     Duration
                 </label>
-                <div class="controls"><input name="duration" type="text" value="" id="duration">
+                <div class="controls"><input name="duration" type="text" value="10" id="duration">
                 </div>
             </div>
 
@@ -52,7 +67,7 @@
                 <label for="rank" class="control-label">
                     Rank
                 </label>
-                <div class="controls"><input name="rank" type="text" value="" id="rank">
+                <div class="controls"><input name="rank" type="text" value="1" id="rank">
                 </div>
             </div>
 
@@ -65,8 +80,22 @@
 </div>
 </div>
     <script>
-    $('input#start').appendDtpicker();
-    $('input#end').appendDtpicker();
+    var d = new Date();
+    // Set sane-ish default times
+    // Set start to the start of the current day
+    var now = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate() + " 00:00";
+    $('input#start').appendDtpicker({
+            'dateFormat' : "YYYY-MM-DD hh:mm",
+            'current' : now,
+            'closeOnSelected' : true
+        });
+    // Set end to the end of the next day
+    d.setDate(d.getDate() + 1);
+    $('input#end').val(d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate() + " 23:30");
+    $('input#end').appendDtpicker({
+            'dateFormat' : "YYYY-MM-DD hh:mm",
+            'closeOnSelected' : true
+        });
     </script>
   </body>
 </html>
