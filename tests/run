@@ -17,6 +17,8 @@ fi
 export CONFIG_FILE="$location/config/dev.json"
 
 redis_port=$(get_config_option redis port)
+client_port=$(get_config_option client port)
+admin_port=$(get_config_option admin port)
 media_dir=$(get_config_option paths media_dir)
 
 rm -rf "$media_dir"
@@ -30,13 +32,20 @@ daemonize no
 port $redis_port
 EOF
 
+admin_pid="$( "$location"/osmo/admin.py > "$location/tests/log/admin" 2>&1 & echo "$!" )"
 api_pid="$( "$location"/osmo/client.py > "$location/tests/log/api" 2>&1 & echo "$!" )"
 publisher_pid="$( "$location"/osmo/publisher.py > "$location/tests/log/publisher" 2>&1 & echo "$!" )"
 monitor_pid="$( redis-cli -p "$redis_port" monitor > "$location/tests/log/monitor" 2>&1 & echo "$!" )"
 
-trap 'kill "$api_pid" "$publisher_pid" "$monitor_pid"; redis-cli -p "$redis_port" shutdown' 0
+trap 'kill "$api_pid" "$publisher_pid" "$monitor_pid" "$admin_pid"; redis-cli -p "$redis_port" shutdown' 0
 
 printf 'Waiting %d seconds for services to finish starting...\n\n' "$service_wait_time"
 sleep "$service_wait_time"
 
-nosetests "$@"
+if [[ $1 == "--manual" ]]; then
+    printf 'Client running on port %d.\n' "$client_port"
+    printf 'Admin running on port %d.\n' "$admin_port"
+    read -rp 'Press enter to finish testing.'
+else
+    nosetests "$@"
+fi
