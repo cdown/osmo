@@ -20,14 +20,14 @@ def event_stream():
     :rtype: generator
     """
 
+    # Avoid timeouts by immediately starting the stream
+    yield ""
+
     ps = r.pubsub()
     ps.subscribe("osmo")
     for message in ps.listen():
-        try:
+        if message["type"] == "message":
             data = message["data"].decode("utf8")
-        except AttributeError:
-            data = message["data"]
-        finally:
             yield "data: %s\n\n" % data
 
 

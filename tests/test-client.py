@@ -69,7 +69,6 @@ class TestClient(object):
     def test_stream(stream):
         last_time = None
         last_slide = None
-        started = False
 
         stream = sseclient.SSEClient("http://localhost:8000/stream")
 
@@ -77,13 +76,6 @@ class TestClient(object):
 
         i = 0
         for message in stream:
-            if not started and message.data == "1":
-                # Stream is ready to send data
-                started = True
-                continue
-
-            assert started, "Expected first event to be Redis subscription acknowledgement, but got %s" % message.data
-
             current_time = time.time()
 
             if i % 2 == 0:
