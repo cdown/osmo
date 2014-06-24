@@ -62,8 +62,29 @@
     }
 
     function begin_sse() {
+        var reset_timer_handle = null;
         var stream = new EventSource("{{ url_for('stream') }}");
+
+        function reset_timer() {
+            /* Even though the SSE spec says that user agents should reload
+             * upon unintended disconnection when not recieving a 204 or 5xx,
+             * it seems that some "modern" browsers do not. Go figure!
+             */
+
+            if (reset_timer_handle) {
+                clearTimeout(reset_timer_handle);
+            }
+
+            reset_timer_handle = setTimeout(function() {
+                location.reload(true);
+            }, 120000);
+        }
+
+        reset_timer();
+
         stream.onmessage = function(e) {
+            reset_timer();
+
             if (e.data === "__empty__") {
                 $("body").removeAttr("background-image");
             } else {
