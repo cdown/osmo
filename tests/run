@@ -3,7 +3,7 @@
 service_wait_time=10
 
 get_config_option() {
-    "$location"/tests/get_config_option.py "$@"
+    "$location"/tools/get_config_option.py "$@"
 }
 
 if [[ $0 == /* ]]; then
