@@ -8,6 +8,7 @@ import db
 import errno
 import flask
 import os
+import subprocess
 import time
 import werkzeug.utils
 from config import config
@@ -27,6 +28,28 @@ def _static_dir(path):
     """
 
     return os.path.join(os.path.dirname(__file__), "templates/static/" + path)
+
+
+def _pdf_to_jpg(name, remove=True):
+    """
+    Convert a PDF to a JPG.
+
+    :param name: the file to convert
+    :param remove: whether to remove the PDF
+    :returns: the name of the new PDF
+    """
+
+    new_name = "%s.jpg" % name.rsplit(".", 1)[0]
+
+    subprocess.check_call((
+        "convert", "-colorspace", "RGB", "-density", "300", "%s[0]" % name,
+        "-flatten", new_name
+    ))
+
+    if remove:
+        os.remove(name)
+
+    return new_name
 
 
 def _dtpicker_strptime(dtpicker_time):
@@ -131,7 +154,12 @@ def add():
         duration = int(duration)
         rank = int(rank)
 
-        u_file.save(os.path.join(config["paths"]["media_dir"], name))
+        save_path = os.path.join(config["paths"]["media_dir"], name)
+        u_file.save(save_path)
+
+        if save_path.endswith(".pdf"):
+            name = os.path.basename(_pdf_to_jpg(save_path))
+
         d.add(name, start, end, duration, rank)
         flask.flash("""Okay, created slide "%s".""" % name, 'success')
         return flask.redirect(flask.url_for("list_all"))

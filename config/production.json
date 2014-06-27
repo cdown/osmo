@@ -14,7 +14,7 @@
     },
     "admin": {
         "port": null,
-        "valid_extensions": ["png","jpg","jpeg","gif"],
+        "valid_extensions": ["png","jpg","jpeg","gif","pdf"],
         "debug": false
 
     }

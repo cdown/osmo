@@ -24,6 +24,9 @@ essence:
 You'll want to use gunicorn or another multithreaded server if you plan on
 having more than one client.
 
+Note that for PDF upload, you will need `ImageMagick
+<http://www.imagemagick.org/>`__ installed.
+
 Redis
 -----
 

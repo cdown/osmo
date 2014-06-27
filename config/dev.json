@@ -14,7 +14,7 @@
     },
     "admin": {
         "port": 8001,
-        "valid_extensions": ["png","jpg","jpeg","gif"],
+        "valid_extensions": ["png","jpg","jpeg","gif","pdf"],
         "debug": true
     }
 }
