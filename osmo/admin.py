@@ -36,7 +36,7 @@ def _pdf_to_jpg(name, remove=True):
 
     :param name: the file to convert
     :param remove: whether to remove the PDF
-    :returns: the name of the new PDF
+    :returns: the name of the newly created file
     """
 
     new_name = "%s.jpg" % name.rsplit(".", 1)[0]
