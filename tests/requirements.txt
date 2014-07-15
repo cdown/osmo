@@ -1,2 +1,5 @@
 nose
 sseclient!=0.0.7
+flake8
+mccabe
+pep8

@@ -26,10 +26,10 @@ class Database(object):
         )
         self.keyspace = "osmo"
         self.rk = {
-            "start":    "%s:start"    % self.keyspace,
-            "end":      "%s:end"      % self.keyspace,
+            "start":    "%s:start" % self.keyspace,
+            "end":      "%s:end" % self.keyspace,
             "duration": "%s:duration" % self.keyspace,
-            "rank":     "%s:rank"     % self.keyspace,
+            "rank":     "%s:rank" % self.keyspace,
         }
 
     def add(self, name, start, end, duration, rank):
@@ -145,11 +145,13 @@ class Database(object):
         p.zscore(self.rk["end"], name)
         rank, duration, start, end = p.execute()
 
+        human_fmt = "%Y-%m-%d %H:%M"
+
         return {
             "rank": rank,
             "duration": duration,
             "start": start,
             "end": end,
-            "human_start": time.strftime("%Y-%m-%d %H:%M",time.localtime(start)),
-            "human_end": time.strftime("%Y-%m-%d %H:%M",time.localtime(end)),
+            "human_start": time.strftime(human_fmt, time.localtime(start)),
+            "human_end": time.strftime(human_fmt, time.localtime(end)),
         }

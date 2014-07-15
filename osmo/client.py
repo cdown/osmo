@@ -12,6 +12,7 @@ import redis
 app = flask.Flask(__name__)
 r = redis.Redis(port=config["redis"]["port"])
 
+
 def event_stream():
     """
     Continually yield the path to the next desired image.
@@ -72,4 +73,4 @@ def media(name):
 
 
 if __name__ == "__main__":
-    app.run(port=config["client"]["port"],debug=config["client"]["debug"])
+    app.run(port=config["client"]["port"], debug=config["client"]["debug"])

@@ -18,6 +18,7 @@ app = flask.Flask(__name__)
 app.secret_key = os.urandom(32)
 d = db.Database()
 
+
 def _static_dir(path):
     """
     Return a path within the static files directory.
@@ -64,6 +65,7 @@ def _dtpicker_strptime(dtpicker_time):
 
     time_struct = time.strptime(dtpicker_time, "%Y-%m-%d %H:%M")
     return time.mktime(time_struct)
+
 
 def _allowed_file(filename):
     return any(
@@ -203,4 +205,4 @@ def static_img(filename):
 
 
 if __name__ == "__main__":
-    app.run(port=config["admin"]["port"],debug=config["admin"]["debug"])
+    app.run(port=config["admin"]["port"], debug=config["admin"]["debug"])
