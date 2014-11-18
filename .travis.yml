@@ -6,11 +6,14 @@ python:
 install:
     - "pip install -r requirements.txt --use-mirrors"
     - "pip install -r tests/requirements.txt --use-mirrors"
+    - "pip install --use-mirrors coveralls"
 script:
     - "flake8 --max-complexity 10 osmo"
-    - "tests/run"
+    - "tests/run --with-coverage --cover-package=osmo"
 after_failure:
     - "cat tests/log/api"
     - "cat tests/log/publisher"
     - "cat tests/log/redis"
     - "cat tests/log/monitor"
+after_success:
+    - coveralls
