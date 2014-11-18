@@ -9,7 +9,7 @@ install:
     - "pip install --use-mirrors coveralls"
 script:
     - "flake8 --max-complexity 10 osmo"
-    - "tests/run --with-coverage"
+    - "tests/run --with-coverage --cover-package=osmo"
 after_failure:
     - "cat tests/log/api"
     - "cat tests/log/publisher"
