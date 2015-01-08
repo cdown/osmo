@@ -1,4 +1,18 @@
-**osmo** is a digital signage framework for minimalists. It doesn't provide you
+[![Build status][travis-image]][travis-builds]
+[![Coverage][coveralls-image]][coveralls]
+[![Code quality][scrutinizer-image]][scrutinizer]
+[![Dependencies][requires-image]][requires]
+
+[travis-builds]: https://travis-ci.org/cdown/osmo
+[travis-image]: https://img.shields.io/travis/cdown/osmo/master.svg
+[coveralls]: https://coveralls.io/r/cdown/osmo
+[coveralls-image]: https://img.shields.io/coveralls/cdown/osmo/master.svg
+[scrutinizer]: https://scrutinizer-ci.com/g/cdown/osmo/code-structure/master/hot-spots
+[scrutinizer-image]: https://img.shields.io/scrutinizer/g/cdown/osmo.svg
+[requires]: https://requires.io/github/cdown/osmo/requirements/?branch=master
+[requires-image]: https://img.shields.io/requires/github/cdown/osmo.svg
+
+osmo is a digital signage framework for minimalists. It doesn't provide you
 with anything fancy, just a web interface to upload images to display, and a
 client to display them with.
 
