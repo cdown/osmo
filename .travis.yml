@@ -4,9 +4,9 @@ python:
     - "2.7"
     - "3.3"
 install:
-    - "pip install -r requirements.txt --use-mirrors"
-    - "pip install -r tests/requirements.txt --use-mirrors"
-    - "pip install --use-mirrors coveralls"
+    - "pip install -r requirements.txt"
+    - "pip install -r tests/requirements.txt"
+    - "pip install coveralls"
 script:
     - "flake8 --max-complexity 10 osmo"
     - "tests/run --with-coverage --cover-package=osmo"
