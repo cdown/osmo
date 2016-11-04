@@ -4,5 +4,6 @@ omit =
     */dist-packages/*
     */tests/*
 
+[report]
 exclude_lines =
     pragma: no cover
